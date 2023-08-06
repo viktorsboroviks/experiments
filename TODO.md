@@ -1,7 +1,7 @@
 # TODO
 
-- move backtests to experiments.git
-- move todo
+- move backtests to experiments.git, clean up
+- update Makefile
 - save as v1.x branch/tag
 - vbfin v2
   - rewrite to Engine - Algorithm - Operations
