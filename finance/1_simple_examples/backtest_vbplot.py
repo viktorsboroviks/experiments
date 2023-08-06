@@ -9,7 +9,7 @@ import vbfin_ops
 import vbplot
 import vbtime
 
-FILENAME = 'fig_backtest_candlestick_vbplot.svg'
+FILENAME = 'backtest_vbplot.svg'
 WIDTH = 1000
 HEIGHT = 750
 INITIAL_ASSETS = 1000

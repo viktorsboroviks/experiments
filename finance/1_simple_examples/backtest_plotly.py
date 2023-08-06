@@ -5,10 +5,8 @@ import dateutil.relativedelta as rd
 import plotly.graph_objects as go
 import plotly.subplots
 import talib as ta
-import vbcore
 import vbfin
 import vbfin_ops
-import vbplot
 import vbtime
 
 INITIAL_ASSETS = 1000

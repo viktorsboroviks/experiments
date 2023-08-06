@@ -1,7 +1,6 @@
 # TODO
 
-- move backtests to experiments.git, clean up
-- update Makefile
+- update Makefile to build/clean all of finance/1
 - save as v1.x branch/tag
 - vbfin v2
   - rewrite to Engine - Algorithm - Operations
