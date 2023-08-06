@@ -1,7 +1,5 @@
 # TODO
 
-- update Makefile to build/clean all of finance/1
-- save as v1.x branch/tag
 - vbfin v2
   - rewrite to Engine - Algorithm - Operations
   - run() = optimize (create big table) + run

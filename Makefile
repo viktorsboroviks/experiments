@@ -1,22 +1,30 @@
 TOOLS_GIT = git@github.com:viktorsboroviks/tools.git
-TOOLS_BRANCH = v1.4
+TOOLS_BRANCH = v1.5
 TOOLS_PATH = tools
 
-.PHONY: all finance setup clean distclean
-all: finance
+.PHONY: all \
+	setup \
+	clean \
+	distclean \
+	run-experiments \
+	run-finance
+
+all: run-experiments
 
 $(TOOLS_PATH):
 	git clone $(TOOLS_GIT) $(TOOLS_PATH)
 	cd $(TOOLS_PATH); git checkout $(TOOLS_BRANCH)
 
 setup: $(TOOLS_PATH)
-	make setup-fin setup-lint --directory $(TOOLS_PATH)
+	make setup-fin --directory $(TOOLS_PATH)
 
-#finance:
+run-experiments: run-finance
 
-#performance-test: setup
-# generates new .svg images under ./python
-#	cd python; ../$(TOOLS_PATH)/docker/finpy.sh performance_test.py
+run-finance: setup
+	cd finance/1_simple_examples; ../../$(TOOLS_PATH)/scripts/env_fin.sh \
+		python3 backtest_plotly.py
+	cd finance/1_simple_examples; ../../$(TOOLS_PATH)/scripts/env_fin.sh \
+		python3 backtest_vbplot.py
 
 # remove temporary files
 clean:
