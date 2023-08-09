@@ -33,6 +33,8 @@
 
 - find some weak/simple working strategy (ma, rsi)
 
+- try market heatmap strategy
+
 - add tests?
 
 - describe in article
