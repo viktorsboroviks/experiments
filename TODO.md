@@ -27,6 +27,8 @@
   - run sequrnces after
 - try optimizing
 
+- calculate probabilities at different pount in time for different moves
+
 - find some weak/simple working strategy (ma, rsi)
 
 - add tests?
