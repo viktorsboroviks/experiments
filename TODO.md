@@ -3,6 +3,9 @@
 - vbfin v2
   - rewrite to Engine - Algorithm - Operations
   - run() = optimize (create big table) + run
+  - optimization
+    - error on duplicates in one list
+    - keep order of subgraphs based on indices of elements (add weights?)
 
 - add simple broker simulation
 - add summary statistics
