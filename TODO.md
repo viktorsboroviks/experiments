@@ -4,8 +4,11 @@
   - rewrite to Engine - Algorithm - Operations
   - run() = optimize (create big table) + run
   - optimization
-    - error on duplicates in one list
-    - keep order of subgraphs based on indices of elements (add weights?)
+    - input check: error on duplicates in one list
+    - create dag from paths
+    - remove shortcut edges
+    - merge leaves right next to its node[-2]
+    - merge separate subgraps based on the original indices of their first/last elements (add weights?)
 
 - add simple broker simulation
 - add summary statistics
