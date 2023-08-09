@@ -6,6 +6,7 @@
   - optimization
     - input check: error on duplicates in one list
     - create dag from paths
+    - dag check: error if loop created
     - remove shortcut edges
     - merge leaves right next to its node[-2]
     - merge separate subgraps based on the original indices of their first/last elements (add weights?)
