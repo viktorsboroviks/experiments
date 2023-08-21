@@ -48,7 +48,7 @@ spx_sell_price = vbfin.DataInfo('^SPX', 'Sell price')
 # run a simple test
 vbfin.BacktestEngine(
     data,
-    [
+    [vbfin.Sequence([
         # account management
         # move assets from previous datetime
         vbfin_ops.Call(function=lambda x: x[-2],
@@ -147,7 +147,7 @@ vbfin.BacktestEngine(
                                'spx': assets_spx,
                                'spx_price': spx_sell_price},
                        ret=assets_total_usd),
-    ],
+    ])]
 ).run()
 
 # convert data to big table

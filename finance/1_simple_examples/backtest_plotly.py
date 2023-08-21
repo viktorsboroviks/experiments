@@ -37,7 +37,7 @@ sell_signal = vbfin.DataInfo('Signals', 'Sell')
 # run a simple test
 vbfin.BacktestEngine(
     data,
-    [
+    [vbfin.Sequence([
         # account management
         # move assets from previous datetime
         vbfin_ops.Call(function=lambda x: x[-2],
@@ -83,7 +83,7 @@ vbfin.BacktestEngine(
                        kwargs={'t': time,
                                'x': sell_signal_cont},
                        ret=sell_signal),
-    ],
+    ])],
 ).run()
 
 # convert data to big table
