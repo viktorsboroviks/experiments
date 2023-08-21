@@ -1,15 +1,7 @@
 # TODO
 
 - vbfin v2
-  - rewrite to Engine - Algorithm - Operations
-  - run() = optimize (create big table) + run
-  - optimization
-    - input check: error on duplicates in one list
-    - create dag from paths
-    - dag check: error if loop created
-    - remove shortcut edges
-    - merge leaves right next to its node[-2]
-    - merge separate subgraps based on the original indices of their first/last elements (add weights?)
+  - add Sequence.name and return it on error
 
 - add simple broker simulation
 - add summary statistics
