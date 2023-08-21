@@ -27,7 +27,13 @@
   - run sequrnces after
 - try optimizing
 
+- calculate probabilities at different pount in time for different moves
+- try graphing a heatmap of probabilities (experiment with resolution) - where the price would end based on combination of triggered strategies
+- multiplication of such heatmaps based on triggers
+
 - find some weak/simple working strategy (ma, rsi)
+
+- try market heatmap strategy
 
 - add tests?
 
