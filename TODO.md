@@ -1,7 +1,15 @@
 # TODO
 
 - vbfin v2
-  - add Sequence.name and return it on error
+  - add example #2:
+    - simple sequences
+      - accumulation
+      - buy and hold
+      - strategy
+ - add example #3
+   - extended #2
+   - functions to generate sequences for different symbols
+   - SPX, BTC, F, TSLA, NVDIA
 
 - add simple broker simulation
 - add summary statistics
@@ -19,7 +27,13 @@
   - run sequrnces after
 - try optimizing
 
-- calculate probabilities at different pount in time for different moves
+- find decision making points, where market slows down to make a decision
+  and either goes up or down
+  - best place to enter/exit
+- try different options for best entry/exist points
+- try different strategies relative to such points
+
+- calculate probabilities at different point in time for different moves
 - try graphing a heatmap of probabilities (experiment with resolution) - where the price would end based on combination of triggered strategies
 - multiplication of such heatmaps based on triggers
 

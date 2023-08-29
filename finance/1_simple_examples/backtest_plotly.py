@@ -34,6 +34,7 @@ sell_signal_cont = vbfin.DataInfo('Signals', 'Sell continuous')
 buy_signal = vbfin.DataInfo('Signals', 'Buy')
 sell_signal = vbfin.DataInfo('Signals', 'Sell')
 
+
 # run a simple test
 vbfin.BacktestEngine(
     data,
