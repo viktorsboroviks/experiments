@@ -66,8 +66,9 @@ seq_price = vbfin.Sequence([
 
 # buy and hold
 bnh_usd = vbfin.DataInfo('Buy and hold', 'USD',
-                                  first_value=INITIAL_ASSETS)
-bnh_spx = vbfin.DataInfo('Buy and hold', '^SPX')
+                         first_value=INITIAL_ASSETS)
+bnh_spx = vbfin.DataInfo('Buy and hold', '^SPX',
+                         first_value=0)
 bnh_total_usd = vbfin.DataInfo('Buy and hold', 'Total USD')
 bnh_buy_signal = vbfin.DataInfo('Buy and hold', 'Buy signal')
 seq_bnh = vbfin.Sequence([
@@ -131,12 +132,12 @@ vbfin.BacktestEngine(
 big_table = data.big_table()
 
 # plot
-FILENAME = 'fig_backtest_strategies'
+FILENAME = 'fig_backtest_sequences'
 WIDTH = 1000
 HEIGHT = 750
 
 # debug: show only last 50 items
-big_table = big_table[-50:]
+#big_table = big_table[-50:]
 
 vbplot.PlotlyPlot(
     height=HEIGHT,
@@ -214,7 +215,7 @@ vbplot.PlotlyPlot(
                     y=big_table['Buy and hold.Total USD'],
                     color=vbcore.CSSColor.BLUE,
                     width=1.0,
-                    name='USD'),
+                    name='Total USD'),
             ]),
         vbplot.LogicSignalSubplot(
             legendgroup_name='Signals',
