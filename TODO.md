@@ -3,13 +3,16 @@
 - vbfin v2
   - add example #2:
     - simple sequences
-      - accumulation
-      - buy and hold
       - strategy
+ - move examples to tools
  - add example #3
    - extended #2
    - functions to generate sequences for different symbols
    - SPX, BTC, F, TSLA, NVDIA
+
+- can this data entry/data display be simplified?
+  - config?
+  - less/other parameters?
 
 - add simple broker simulation
 - add summary statistics
