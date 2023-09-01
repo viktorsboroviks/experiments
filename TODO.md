@@ -1,14 +1,18 @@
 # TODO
 
+- add text size for fig
+- add text/annotations as an alternative to legend
+  - resolve cutting of text
+  - decide between text and annotation
 - vbfin v2
   - add example #2:
     - simple sequences
       - strategy
- - move examples to tools
- - add example #3
-   - extended #2
-   - functions to generate sequences for different symbols
-   - SPX, BTC, F, TSLA, NVDIA
+  - move examples to tools
+  - add example #3
+    - extended #2
+    - functions to generate sequences for different symbols
+    - SPX, BTC, F, TSLA, NVDIA
 
 - can this data entry/data display be simplified?
   - config?
