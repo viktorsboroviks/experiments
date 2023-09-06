@@ -1,9 +1,6 @@
 # TODO
 
-- add text size for fig
 - add text/annotations as an alternative to legend
-  - resolve cutting of text
-  - decide between text and annotation
 - vbfin v2
   - add example #2:
     - simple sequences
