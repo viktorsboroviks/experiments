@@ -230,6 +230,7 @@ big_table = data.big_table()
 FILENAME = 'fig_backtest_sequences'
 WIDTH = 1000
 HEIGHT = 750
+FONT_SIZE = 10
 
 # debug: show only last 100 items
 big_table = big_table[-100:]
@@ -238,6 +239,7 @@ vbplot.PlotlyPlot(
     height=HEIGHT,
     width=WIDTH,
     row_heights=[2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+    font_size=FONT_SIZE,
     subplots=[
         vbplot.Subplot(
             legendgroup_name='^SPX',
