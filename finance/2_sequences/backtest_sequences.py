@@ -114,36 +114,39 @@ seq_bnh = vbfin.Sequence([
                 ret=bnh_total_usd),
 ])
 
+SMA_FAST = 50
+SMA_SLOW = 200
+
 # sma
-spx_close_sma5 = vbfin.DataInfo('^SPX', 'Close SMA5')
-spx_close_sma20 = vbfin.DataInfo('^SPX', 'Close SMA20')
-spx_sma5_gt_sma20 = vbfin.DataInfo('^SPX', 'SMA5>SMA20')
-spx_sma5_gt_sma20_rise = vbfin.DataInfo('^SPX', 'SMA5>SMA20 rise')
-spx_sma5_gt_sma20_fall = vbfin.DataInfo('^SPX', 'SMA5>SMA20 fall')
+spx_close_sma_fast = vbfin.DataInfo('^SPX', 'Close SMA fast')
+spx_close_sma_slow = vbfin.DataInfo('^SPX', 'Close SMA slow')
+spx_sma_fast_gt_sma_slow = vbfin.DataInfo('^SPX', 'SMA fast>SMA slow')
+spx_sma_fast_gt_sma_slow_rise = vbfin.DataInfo('^SPX', 'SMA fast>SMA slow rise')
+spx_sma_fast_gt_sma_slow_fall = vbfin.DataInfo('^SPX', 'SMA fast>SMA slow fall')
 seq_sma = vbfin.Sequence([
-    vbfin_ops.Call(function=lambda x: ta.SMA(x, 5)[-1],
+    vbfin_ops.Call(function=lambda x: ta.SMA(x, SMA_FAST)[-1],
                     kwargs={'x': spx_close},
-                    ret=spx_close_sma5),
-    vbfin_ops.Call(function=lambda x: ta.SMA(x, 20)[-1],
+                    ret=spx_close_sma_fast),
+    vbfin_ops.Call(function=lambda x: ta.SMA(x, SMA_SLOW)[-1],
                     kwargs={'x': spx_close},
-                    ret=spx_close_sma20),
+                    ret=spx_close_sma_slow),
     # continuous signal
-    vbfin_ops.Call(function=lambda sma5, sma20: sma5[-1] > sma20[-1],
-                    kwargs={'sma5': spx_close_sma5,
-                            'sma20': spx_close_sma20},
-                    ret=spx_sma5_gt_sma20),
+    vbfin_ops.Call(function=lambda sma_fast, sma_slow: sma_fast[-1] > sma_slow[-1],
+                    kwargs={'sma_fast': spx_close_sma_fast,
+                            'sma_slow': spx_close_sma_slow},
+                    ret=spx_sma_fast_gt_sma_slow),
     # rise signal
     vbfin_ops.Call(function=lambda t, x: \
                     (not x[-2]) and x[-1] if len(t) > 1 else x[-1],
                     kwargs={'t': time,
-                            'x': spx_sma5_gt_sma20},
-                    ret=spx_sma5_gt_sma20_rise),
+                            'x': spx_sma_fast_gt_sma_slow},
+                    ret=spx_sma_fast_gt_sma_slow_rise),
     # fall signal
     vbfin_ops.Call(function=lambda t, x: \
                     (x[-2]) and not x[-1] if len(t) > 1 else x[-1],
                     kwargs={'t': time,
-                            'x': spx_sma5_gt_sma20},
-                    ret=spx_sma5_gt_sma20_fall),
+                            'x': spx_sma_fast_gt_sma_slow},
+                    ret=spx_sma_fast_gt_sma_slow_fall),
 ])
 
 # strategy
@@ -171,13 +174,13 @@ seq_strategy = vbfin.Sequence([
                    kwargs={'m': new_month,
                            'x': strategy_usd},
                    ret=strategy_usd),
-    # buy signal: sma5 > sma20
+    # buy signal: sma_fast > sma_slow
     vbfin_ops.Call(function=lambda x: x[-1],
-                   kwargs={'x': spx_sma5_gt_sma20_rise},
+                   kwargs={'x': spx_sma_fast_gt_sma_slow_rise},
                    ret=strategy_buy_signal),
-    # sell signal: sma5 <= sma20
+    # sell signal: sma_fast <= sma_slow
     vbfin_ops.Call(function=lambda x: x[-1],
-                   kwargs={'x': spx_sma5_gt_sma20_fall},
+                   kwargs={'x': spx_sma_fast_gt_sma_slow_fall},
                    ret=strategy_sell_signal),
     # spx after buy
     vbfin_ops.Call(function=lambda b, spx, usd, spx_price: \
@@ -275,16 +278,16 @@ vbplot.PlotlyPlot(
                     name='Sell price'),
                 vbplot.Scatter(
                     x=big_table.index,
-                    y=big_table['^SPX.Close SMA5'],
+                    y=big_table['^SPX.Close SMA fast'],
                     color=vbcore.CSSColor.RED,
                     width=1.0,
-                    name='SMA5'),
+                    name='SMA fast'),
                 vbplot.Scatter(
                     x=big_table.index,
-                    y=big_table['^SPX.Close SMA20'],
+                    y=big_table['^SPX.Close SMA slow'],
                     color=vbcore.CSSColor.BLUE,
                     width=1.0,
-                    name='SMA20'),
+                    name='SMA slow'),
             ]),
         vbplot.LogicSignalSubplot(
             legendgroup_name='Signals',
@@ -409,6 +412,8 @@ vbplot.PlotlyPlot(
     ]).svg(f'{FILENAME}_vbplot.svg')
 
 savings = big_table['Saving.USD'][-1]
-print(f'saving USD: {savings}')
-total = big_table['Buy and hold.Total USD'][-1]
-print(f'buy and hold USD: {total}')
+buy_and_hold = big_table['Buy and hold.Total USD'][-1]
+strategy = big_table['Strategy.Total USD'][-1]
+print(f'saving:         {savings:.2f} USD ({savings/buy_and_hold * 100.0:.2f}%)')
+print(f'buy and hold:   {buy_and_hold:.2f} USD (100.00%)')
+print(f'strategy:       {strategy:.2f} USD ({strategy/buy_and_hold * 100.0:.2f}%)')

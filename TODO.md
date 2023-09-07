@@ -1,9 +1,6 @@
 # TODO
 
 - vbfin v2
-  - add example #2:
-    - simple sequences
-      - strategy
   - move examples to tools
   - add example #3
     - extended #2
