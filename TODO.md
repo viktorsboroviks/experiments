@@ -1,6 +1,5 @@
 # TODO
 
-- add text/annotations as an alternative to legend
 - vbfin v2
   - add example #2:
     - simple sequences
