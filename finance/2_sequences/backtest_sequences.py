@@ -179,28 +179,34 @@ seq_strategy = vbfin.Sequence([
     vbfin_ops.Call(function=lambda x: x[-1],
                    kwargs={'x': spx_sma5_gt_sma20_fall},
                    ret=strategy_sell_signal),
-    # spx buy
-#    vbfin_ops.Call(function=lambda b, spx, usd, spx_price: \
-#                   (spx[-1] + usd[-1]/spx_price[-1]) if b[-1] else spx[-1],
-#                   kwargs={'b': strategy_buy_signal,
-#                           'spx': strategy_spx,
-#                           'usd': strategy_usd,
-#                           'spx_price': spx_buy_price},
-#                   ret=strategy_spx),
-    # spx sell
-#    vbfin_ops.Call(function=lambda b, spx, usd, spx_price: \
-#                   (spx[-1] + usd[-1]/spx_price[-1]) if b[-1] else spx[-1],
-#                   kwargs={'b': strategy_buy_signal,
-#                           'spx': strategy_spx,
-#                           'usd': strategy_usd,
-#                           'spx_price': spx_buy_price},
-#                   ret=strategy_spx),
-#    # usd
-#    vbfin_ops.Call(function=lambda b, usd: \
-#                   0 if b[-1] else usd[-1],
-#                   kwargs={'b': strategy_buy_signal,
-#                           'usd': strategy_usd},
-#                   ret=strategy_usd),
+    # spx after buy
+    vbfin_ops.Call(function=lambda b, spx, usd, spx_price: \
+                   (spx[-1] + usd[-1]/spx_price[-1]) if b[-1] else spx[-1],
+                   kwargs={'b': strategy_buy_signal,
+                           'spx': strategy_spx,
+                           'usd': strategy_usd,
+                           'spx_price': spx_buy_price},
+                   ret=strategy_spx),
+    # usd after buy
+    vbfin_ops.Call(function=lambda b, usd: \
+                   0 if b[-1] else usd[-1],
+                   kwargs={'b': strategy_buy_signal,
+                           'usd': strategy_usd},
+                   ret=strategy_usd),
+    # usd after sell
+    vbfin_ops.Call(function=lambda s, spx, usd, spx_price: \
+                   (spx[-1] * spx_price[-1]) if s[-1] else usd[-1],
+                   kwargs={'s': strategy_sell_signal,
+                           'spx': strategy_spx,
+                           'usd': strategy_usd,
+                           'spx_price': spx_sell_price},
+                   ret=strategy_usd),
+    # spx after sell
+    vbfin_ops.Call(function=lambda s, spx: \
+                   0 if s[-1] else spx[-1],
+                   kwargs={'s': strategy_sell_signal,
+                           'spx': strategy_spx},
+                   ret=strategy_spx),
     # total usd
     vbfin_ops.Call(function=lambda usd, spx, spx_price: \
                 usd[-1] + (spx[-1] * spx_price[-1]),
@@ -238,7 +244,7 @@ big_table = big_table[-100:]
 vbplot.PlotlyPlot(
     height=HEIGHT,
     width=WIDTH,
-    row_heights=[2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+    row_heights=[2.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0],
     font_size=FONT_SIZE,
     subplots=[
         vbplot.Subplot(
@@ -345,38 +351,6 @@ vbplot.PlotlyPlot(
             traces=[
                 vbplot.Step(
                     x=big_table.index,
-                    y=big_table['Buy and hold.USD'],
-                    color=vbcore.CSSColor.BLUE,
-                    width=1.0,
-                    dash=vbplot.Dash.DOT,
-                    name='USD',
-                    showlegend=False,
-                    showannotation=True,
-                    ),
-            ]),
-        vbplot.Subplot(
-            legendgroup_name='Buy and hold',
-            col=1,
-            row=5,
-            traces=[
-                vbplot.Step(
-                    x=big_table.index,
-                    y=big_table['Buy and hold.^SPX'],
-                    color=vbcore.CSSColor.BLUE,
-                    width=1.0,
-                    dash=vbplot.Dash.DASH,
-                    name='^SPX',
-                    showlegend=False,
-                    showannotation=True,
-                    ),
-            ]),
-        vbplot.Subplot(
-            legendgroup_name='Buy and hold',
-            col=1,
-            row=6,
-            traces=[
-                vbplot.Step(
-                    x=big_table.index,
                     y=big_table['Buy and hold.Total USD'],
                     color=vbcore.CSSColor.BLUE,
                     width=1.0,
@@ -388,7 +362,7 @@ vbplot.PlotlyPlot(
         vbplot.Subplot(
             legendgroup_name='Strategy',
             col=1,
-            row=7,
+            row=5,
             traces=[
                 vbplot.Step(
                     x=big_table.index,
@@ -404,7 +378,7 @@ vbplot.PlotlyPlot(
         vbplot.Subplot(
             legendgroup_name='Strategy',
             col=1,
-            row=8,
+            row=6,
             traces=[
                 vbplot.Step(
                     x=big_table.index,
@@ -420,7 +394,7 @@ vbplot.PlotlyPlot(
         vbplot.Subplot(
             legendgroup_name='Strategy',
             col=1,
-            row=9,
+            row=7,
             traces=[
                 vbplot.Step(
                     x=big_table.index,
