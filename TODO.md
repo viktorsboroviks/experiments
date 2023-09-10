@@ -11,6 +11,8 @@
   - config?
   - less/other parameters?
 
+- publish
+
 - add simple broker simulation
 - add summary statistics
 - compare to known framework

@@ -20,11 +20,11 @@ setup: $(TOOLS_PATH)
 
 run-experiments: run-finance
 
-run-finance: setup
-	cd finance/1_simple_examples; ../../$(TOOLS_PATH)/scripts/env_fin.sh \
-		python3 backtest_plotly.py
-	cd finance/1_simple_examples; ../../$(TOOLS_PATH)/scripts/env_fin.sh \
-		python3 backtest_vbplot.py
+#run-finance: setup
+#	cd finance/1_simple_examples; ../../$(TOOLS_PATH)/scripts/env_fin.sh \
+#		python3 backtest_plotly.py
+#	cd finance/1_simple_examples; ../../$(TOOLS_PATH)/scripts/env_fin.sh \
+#		python3 backtest_vbplot.py
 
 # remove temporary files
 clean:
