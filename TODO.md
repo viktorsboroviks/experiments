@@ -7,6 +7,9 @@
     - functions to generate sequences for different symbols
     - SPX, BTC, F, TSLA, NVDIA
 
+- convert Sequence to list[Operations]
+- add standard calls around standalone fin sequences (draw, return total x etc)
+
 - can this data entry/data display be simplified?
   - config?
   - less/other parameters?
