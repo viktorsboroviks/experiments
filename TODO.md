@@ -1,14 +1,11 @@
 # TODO
 
-- vbfin v2
-  - move examples to tools
-  - add example #3
-    - extended #2
-    - functions to generate sequences for different symbols
-    - SPX, BTC, F, TSLA, NVDIA
-
-- convert Sequence to list[Operations]
-- add standard calls around standalone fin sequences (draw, return total x etc)
+- add example #3
+  - extended #2
+  - functions to generate sequences for different symbols
+  - add standard calls around standalone fin sequences (draw, return total x etc)
+    - draw, think
+  - SPX, BTC, F, TSLA, NVDIA
 
 - can this data entry/data display be simplified?
   - config?
