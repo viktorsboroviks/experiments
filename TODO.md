@@ -1,17 +1,46 @@
 # TODO
 
-- add example #3
-  - extended #2
-  - functions to generate sequences for different symbols
-  - add standard calls around standalone fin sequences (draw, return total x etc)
-    - draw, think
-  - SPX, BTC, F, TSLA, NVDIA
+- split
+  - tools
+    - fin
+    - plot
+    - examples (leave #1 and #2, convert #3 to experiment)
+  - experiments
+    - strategies
+    - experiments
+    - make for all (fetch version of tools and build)
+- add first experiment - sma cross via investing
+  - strategy: vbfin - new virtual class: Strategy
+    - in: mandatory init params
+      - initial_cash
+      - add_cash_period
+      - add_cash_value
+      - for every ticker
+        - min_traded_quantity
+        - margin
+        - leverage
+        - slippage
+        - short_overnight_interest
+        - long_overnight_interest
+    - in: optional init params
+    - out: get_ops
+    - out: plot_debug
+  - strategies - in experiments
+    - saving
+    - buy and hold
+    - sma cross
+  - every table has standard columns for every strategy
+    - total_value
+    - total_cash
+    - total_used
+  - function to parse table and plot
+    - total_value, free, used for different strategies
+  - find optimal sma cross parameters for daily
+    - SPX, BTC, F, TSLA, NVDIA
+    - plot beautiful visuals
 
-- can this data entry/data display be simplified?
-  - config?
-  - less/other parameters?
-
-- publish
+- publish tool
+- publish sma cross experiment
 
 - add simple broker simulation
 - add summary statistics
