@@ -1,5 +1,9 @@
 # TODO
 
+- highlight with red lint results / include only those
+- fix '/bin/sh: 1: hadolint: Exec format error' in make lint
+- fix TODOs in code
+- finish strategy/saving.py
 - split
   - tools
     - fin
