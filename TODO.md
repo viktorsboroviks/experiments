@@ -1,9 +1,9 @@
 # TODO
 
+- fix all TODOs in code
+- lint both tools and experiments
 - highlight with red lint results / include only those
 - fix '/bin/sh: 1: hadolint: Exec format error' in make lint
-- fix TODOs in code
-- finish strategy/saving.py
 - split
   - tools
     - fin
@@ -14,6 +14,21 @@
     - experiments
     - make for all (fetch version of tools and build)
 - add first experiment - sma cross via investing
+  - strategy: vbfin - new virtual class: Strategy
+    - in: mandatory init params
+      - initial_cash
+      - add_cash_period
+      - add_cash_value
+      - for every ticker
+        - min_traded_quantity
+        - margin
+        - leverage
+        - slippage
+        - short_overnight_interest
+        - long_overnight_interest
+    - in: optional init params
+    - out: get_ops
+    - out: plot_debug
   - strategies - in experiments
     - saving
     - buy and hold
