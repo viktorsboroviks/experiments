@@ -1,3 +1,6 @@
+'''
+Experiment for testing money saving.
+'''
 import datetime
 import vfin
 import vfin_ops
@@ -9,33 +12,25 @@ data = vfin.Data({
                               end=datetime.datetime(2023, 11, 1))
 })
 
-time_seq = vfin_ops.TimePeriodSeq('Monthly timer', 'month')
+saving1_opgen = strategies.saving.SavingOpGen(
+    name='Saving w/o adding',
+    initial_value=1000)
 
-cash_saving1_seq = strategies.saving.CashSaving(
-    strategy_name='Saving w/o adding',
-    initial_cash=1000,
-    currency_name='EUR')
-
-cash_saving2_seq = strategies.saving.CashSaving(
-    strategy_name='Saving while adding',
-    initial_cash=1000,
-    add_cash=100,
-    add_cash_when='month',
-    currency_name='EUR')
+saving2_opgen = strategies.saving.SavingOpGen(
+    name='Saving while adding',
+    initial_value=1000,
+    add_value=100,
+    add_alarm='monthly')
 
 vfin.BacktestEngine(
     data,
-    time_seq.get_ops() + 
-    cash_saving1_seq.get_ops() +
-    cash_saving2_seq.get_ops()
+    saving1_opgen.ops() +
+    saving2_opgen.ops()
 ).run()
 
 # debug
-time_seq.debug_plot(data.big_table(), 'test_time.svg')
-cash_saving1_seq.debug_plot(data.big_table(), 'test_saving1.svg')
-cash_saving2_seq.debug_plot(data.big_table(), 'test_saving2.svg')
+saving1_opgen.debug_plot(data.big_table(), 'test_saving1.svg')
+saving2_opgen.debug_plot(data.big_table(), 'test_saving2.svg')
 
-
-# TODO: Add saving strategy, debug, result
-# TODO: Decide what to do with timeperiod/alarm and a strategy
-# TODO: Review code - clean up, simplify!
+# TODO: Add money averaging
+# TODO: Add accumulating final function to show total

@@ -1,0 +1,4 @@
+[flake8]
+extend-ignore = E302, E501
+per-file-ignores =
+    python/test/vfin_ops_test.py:E124, E201
