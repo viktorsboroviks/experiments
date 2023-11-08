@@ -14,21 +14,26 @@ class SavingOpGen(vfin_ops.TradingOpGen):
     Generate an operation sequence for  saving over time.
     '''
     def __init__(self,
-                 name: str,
                  initial_value: float,
                  add_value: float = None,
                  add_alarm: vtime.Alarm = None):
         vfin_ops.TradingOpGen.__init__(self,
-                                       name,
                                        initial_value,
                                        add_value,
                                        add_alarm)
 
-        self.datainfo['total'] = vfin.DataInfo('total', name,
+        # TODO: create a dedicated name function
+        self.datainfo['total'] = vfin.DataInfo('total', self.name(),
                                  first_value=initial_value)
         if add_value:
-            self.opgens['alarm'] = vfin_ops.AlarmOpGen('alarm',
-                                                        add_alarm)
+            self.opgens['alarm'] = vfin_ops.AlarmOpGen(add_alarm)
+
+# TODO: fix
+#    @staticmethod
+#    def create_name(initial_value, add_value, add_alarm) -> str:
+#        '''
+#        Create name.
+#        '''
 
     def ops(self):
         ops = [

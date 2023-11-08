@@ -3,7 +3,6 @@ Experiment for testing money saving.
 '''
 import datetime
 import vfin
-import vfin_ops
 import strategies.saving
 
 data = vfin.Data({
@@ -13,14 +12,12 @@ data = vfin.Data({
 })
 
 saving1_opgen = strategies.saving.SavingOpGen(
-    name='Saving w/o adding',
     initial_value=1000)
 
 saving2_opgen = strategies.saving.SavingOpGen(
-    name='Saving while adding',
     initial_value=1000,
     add_value=100,
-    add_alarm='monthly')
+    add_alarm='monthly')  # TODO: make sure this is normalized to Alarm object, do not leave as a str
 
 vfin.BacktestEngine(
     data,
@@ -30,6 +27,7 @@ vfin.BacktestEngine(
 
 # debug
 saving1_opgen.debug_plot(data.big_table(), 'test_saving1.svg')
+saving1_opgen.name()
 saving2_opgen.debug_plot(data.big_table(), 'test_saving2.svg')
 
 # TODO: Add money averaging

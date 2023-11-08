@@ -11,7 +11,7 @@ data = vfin.Data({
                               end=datetime.datetime(2023, 11, 1))
 })
 
-alarm_opgen = vfin_ops.AlarmOpGen('Monthly timer', 'monthly')
+alarm_opgen = vfin_ops.AlarmOpGen('monthly')
 
 vfin.BacktestEngine(
     data,
