@@ -1,9 +1,10 @@
 '''
 Experiment for generating alarm.
 '''
+import datetime
 import vfin
 import vfin_ops
-import datetime
+import vtime
 
 data = vfin.Data({
     '^SPX': vfin.fetch_ticker('^SPX',
@@ -11,7 +12,7 @@ data = vfin.Data({
                               end=datetime.datetime(2023, 11, 1))
 })
 
-alarm_opgen = vfin_ops.AlarmOpGen('monthly')
+alarm_opgen = vfin_ops.AlarmOpGen(vtime.Alarm('monthly'))
 # debug name
 print(alarm_opgen.name)
 

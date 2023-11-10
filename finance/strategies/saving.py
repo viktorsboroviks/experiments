@@ -7,6 +7,7 @@ import vplot
 import vtime
 
 
+# pylint: disable=too-few-public-methods
 class SavingOpGen(vfin_ops.TradingOpGen):
     '''
     Generate an operation sequence for  saving over time.
@@ -20,13 +21,17 @@ class SavingOpGen(vfin_ops.TradingOpGen):
                                        add_value,
                                        add_alarm)
 
-        # TODO: create a dedicated name function
-        self.datainfo['total'] = vfin.DataInfo('total', self.name,
-                                 first_value=initial_value)
+        print(self.name)
+        self.datainfo['total'] = vfin.DataInfo('total',
+                                               self.name,
+                                               first_value=initial_value)
         if add_value:
             self.opgens['alarm'] = vfin_ops.AlarmOpGen(add_alarm)
 
     def ops(self):
+        '''
+        Generate operations for this sequence.
+        '''
         ops = [
             # move assets from previous datetime
             vfin_ops.Call(function=lambda x: x[-2],
@@ -63,7 +68,7 @@ class SavingOpGen(vfin_ops.TradingOpGen):
                         y=table[self.datainfo['total'].name],
                         color=vplot.CSSColor.GREEN,
                         width=1.0,
-                        name=self.datainfo['total'].name,  # TODO: fix the name. Why "None:"?
+                        name=self.datainfo['total'].name,
                         showlegend=False,
                         showannotation=True,
                     )

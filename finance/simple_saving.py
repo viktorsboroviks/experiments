@@ -3,6 +3,7 @@ Experiment for testing money saving.
 '''
 import datetime
 import vfin
+import vtime
 import strategies.saving
 
 data = vfin.Data({
@@ -17,7 +18,7 @@ saving1_opgen = strategies.saving.SavingOpGen(
 saving2_opgen = strategies.saving.SavingOpGen(
     initial_value=1000,
     add_value=100,
-    add_alarm='monthly')  # TODO: make sure this is normalized to Alarm object, do not leave as a str
+    add_alarm=vtime.Alarm('monthly'))
 
 vfin.BacktestEngine(
     data,
