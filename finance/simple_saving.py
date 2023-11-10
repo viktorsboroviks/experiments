@@ -27,7 +27,8 @@ vfin.BacktestEngine(
 
 # debug
 saving1_opgen.debug_plot(data.big_table(), 'test_saving1.svg')
-saving1_opgen.name()
+# debug name
+print(saving1_opgen.name)
 saving2_opgen.debug_plot(data.big_table(), 'test_saving2.svg')
 
 # TODO: Add money averaging

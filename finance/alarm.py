@@ -12,6 +12,8 @@ data = vfin.Data({
 })
 
 alarm_opgen = vfin_ops.AlarmOpGen('monthly')
+# debug name
+print(alarm_opgen.name)
 
 vfin.BacktestEngine(
     data,

@@ -1,8 +1,6 @@
 '''
 Simple saving strategy.
 '''
-import pandas as pd
-import vcore
 import vfin
 import vfin_ops
 import vplot
@@ -23,17 +21,10 @@ class SavingOpGen(vfin_ops.TradingOpGen):
                                        add_alarm)
 
         # TODO: create a dedicated name function
-        self.datainfo['total'] = vfin.DataInfo('total', self.name(),
+        self.datainfo['total'] = vfin.DataInfo('total', self.name,
                                  first_value=initial_value)
         if add_value:
             self.opgens['alarm'] = vfin_ops.AlarmOpGen(add_alarm)
-
-# TODO: fix
-#    @staticmethod
-#    def create_name(initial_value, add_value, add_alarm) -> str:
-#        '''
-#        Create name.
-#        '''
 
     def ops(self):
         ops = [
@@ -69,10 +60,10 @@ class SavingOpGen(vfin_ops.TradingOpGen):
                 traces=[
                     vplot.Step(
                         x=table.index,
-                        y=table[self.datainfo['total'].name()],
-                        color=vcore.CSSColor.GREEN,
+                        y=table[self.datainfo['total'].name],
+                        color=vplot.CSSColor.GREEN,
                         width=1.0,
-                        name=self.datainfo['total'].name(),  # TODO: fix the name. Why "None:"?
+                        name=self.datainfo['total'].name,  # TODO: fix the name. Why "None:"?
                         showlegend=False,
                         showannotation=True,
                     )
@@ -88,10 +79,10 @@ class SavingOpGen(vfin_ops.TradingOpGen):
                     steps=[
                         vplot.Step(
                             x=table.index,
-                            y=table[self.opgens['alarm'].datainfo['alarm'].name()],
-                            color=vcore.CSSColor.BLACK,
+                            y=table[self.opgens['alarm'].datainfo['alarm'].name],
+                            color=vplot.CSSColor.BLACK,
                             width=1.0,
-                            name=self.opgens['alarm'].datainfo['alarm'].name(),
+                            name=self.opgens['alarm'].datainfo['alarm'].name,
                             showlegend=False,
                             showannotation=True,
                         )
