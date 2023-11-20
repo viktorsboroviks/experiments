@@ -21,9 +21,8 @@ class SavingOpGen(vfin_ops.TradingOpGen):
                                        add_value,
                                        add_alarm)
 
-        print(self.name)
-        self.datainfo['total'] = vfin.DataInfo('total',
-                                               self.name,
+        self.datainfo['total'] = vfin.DataInfo(self.name,
+                                               'total',
                                                first_value=initial_value)
         if add_value:
             self.opgens['alarm'] = vfin_ops.AlarmOpGen(add_alarm)
