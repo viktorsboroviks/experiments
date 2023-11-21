@@ -9,7 +9,7 @@ import strategies.money_avg
 
 data = vfin.Data({
     '^SPX': vfin.fetch_ticker('^SPX',
-                              start=datetime.datetime(2020, 1, 1),
+                              start=datetime.datetime(2000, 1, 1),
                               end=datetime.datetime(2023, 11, 1))
 })
 
@@ -37,9 +37,11 @@ vfin.BacktestEngine(
     money_avg_opgen.ops()
 ).run()
 
+print(saving1_opgen.total(data.big_table()))
+print(saving2_opgen.total(data.big_table()))
+print(money_avg_opgen.total(data.big_table()))
+
 # debug
 saving1_opgen.debug_plot(data.big_table(), 'test_saving1.svg')
 saving2_opgen.debug_plot(data.big_table(), 'test_saving2.svg')
 money_avg_opgen.debug_plot(data.big_table(), 'test_money_avg.svg')
-
-# TODO: Add accumulating final function to show total

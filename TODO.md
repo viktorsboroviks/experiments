@@ -1,7 +1,5 @@
 # TODO
 
-- fix all TODOs in code
-- lint both tools and experiments
 - highlight with red lint results / include only those
 - fix '/bin/sh: 1: hadolint: Exec format error' in make lint
 - split
