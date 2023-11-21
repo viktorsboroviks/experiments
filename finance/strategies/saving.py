@@ -49,14 +49,14 @@ class SavingOpGen(vfin_ops.TradingOpGen):
             ]
         return ops
 
-    # pylint: disable=too-many-arguments
-    def _debug_plot(self,
-                    table,
-                    filename_svg,
-                    width,
-                    height,
-                    font_size):
+    def debug_subplots(self, table):
+        '''
+        Return a list of debug subplots.
+        Also used to draw debug_plot().
 
+        Args:
+            table: pd.DataFrame object containing the data to debug.
+        '''
         subplots = [
             vplot.Subplot(
                 col=1,
@@ -67,7 +67,7 @@ class SavingOpGen(vfin_ops.TradingOpGen):
                         y=table[self.datainfo['total'].name],
                         color=vplot.CSSColor.GREEN,
                         width=1.0,
-                        name=self.datainfo['total'].name,
+                        name='total',
                         showlegend=False,
                         showannotation=True,
                     )
@@ -86,17 +86,11 @@ class SavingOpGen(vfin_ops.TradingOpGen):
                             y=table[self.opgens['alarm'].datainfo['alarm'].name],
                             color=vplot.CSSColor.BLACK,
                             width=1.0,
-                            name=self.opgens['alarm'].datainfo['alarm'].name,
+                            name='alarm',
                             showlegend=False,
                             showannotation=True,
                         )
                     ]
                 ),
             ]
-
-        vplot.PlotlyPlot(
-            height=height,
-            width=width,
-            font_size=font_size,
-            subplots=subplots
-        ).svg(filename_svg)
+        return subplots

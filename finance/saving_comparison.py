@@ -40,7 +40,6 @@ vfin.BacktestEngine(
 # debug
 saving1_opgen.debug_plot(data.big_table(), 'test_saving1.svg')
 saving2_opgen.debug_plot(data.big_table(), 'test_saving2.svg')
-# TODO: Fix this debug plot to become readable
 money_avg_opgen.debug_plot(data.big_table(), 'test_money_avg.svg')
 
 # TODO: Add accumulating final function to show total

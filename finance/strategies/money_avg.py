@@ -107,67 +107,92 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
         ]
         return ops
 
-    # pylint: disable=too-many-arguments
-    def _debug_plot(self,
-                    table,
-                    filename_svg,
-                    width,
-                    height,
-                    font_size):
-        # TODO: adjust
-        vplot.PlotlyPlot(
-            height=height,
-            width=width,
-            font_size=font_size,
-            subplots=[
-                vplot.Subplot(
-                    col=1,
-                    row=1,
-                    traces=[
-                        vplot.Step(
-                            x=table.index,
-                            y=table[self.datainfo['total'].name],
-                            color=vplot.CSSColor.GREEN,
-                            width=1.0,
-                            name=self.datainfo['total'].name,
-                            showlegend=False,
-                            showannotation=True,
-                        ),
-                        vplot.Step(
-                            x=table.index,
-                            y=table[self.datainfo['cash'].name],
-                            color=vplot.CSSColor.BLACK,
-                            width=1.0,
-                            name=self.datainfo['cash'].name,
-                            showlegend=False,
-                            showannotation=True,
-                        ),
-                        vplot.Step(
-                            x=table.index,
-                            y=table[self.datainfo['asset'].name],
-                            color=vplot.CSSColor.BLUE,
-                            width=1.0,
-                            name=self.datainfo['asset'].name,
-                            showlegend=False,
-                            showannotation=True,
-                        ),
-                    ]
-                ),
-                vplot.LogicSignalSubplot(
-                    col=1,
-                    row=2,
-                    yshift=1.2,
-                    steps=[
-                        vplot.Step(
-                            x=table.index,
-                            y=table[self.opgens['alarm'].datainfo['alarm'].name],
-                            color=vplot.CSSColor.BLACK,
-                            width=1.0,
-                            name=self.opgens['alarm'].datainfo['alarm'].name,
-                            showlegend=False,
-                            showannotation=True,
-                        )
-                    ]
-                ),
-            ]
-        ).svg(filename_svg)
+    def debug_subplots(self, table):
+        '''
+        Return a list of debug subplots.
+        Also used to draw debug_plot()
+
+        Args:
+            table: pd.DataFrame object containing the data to debug.
+        '''
+        price_subplots = self.opgens['price'].debug_subplots(table)
+        subplots = price_subplots
+        subplots += [
+            vplot.Subplot(
+                col=1,
+                row=len(price_subplots) + 1,
+                traces=[
+                    vplot.Step(
+                        x=table.index,
+                        y=table[self.datainfo['cash'].name],
+                        color=vplot.CSSColor.BLACK,
+                        width=1.0,
+                        name='cash',
+                        showlegend=False,
+                        showannotation=True,
+                    ),
+                ]
+            ),
+            vplot.Subplot(
+                col=1,
+                row=len(price_subplots) + 2,
+                traces=[
+                    vplot.Step(
+                        x=table.index,
+                        y=table[self.datainfo['asset'].name].diff(),
+                        color=vplot.CSSColor.BLUE,
+                        width=1.0,
+                        name='asset change',
+                        showlegend=False,
+                        showannotation=True,
+                    ),
+                ]
+            ),
+            vplot.Subplot(
+                col=1,
+                row=len(price_subplots) + 3,
+                traces=[
+                    vplot.Step(
+                        x=table.index,
+                        y=table[self.datainfo['asset'].name],
+                        color=vplot.CSSColor.BLUE,
+                        width=1.0,
+                        name='asset',
+                        showlegend=False,
+                        showannotation=True,
+                    ),
+                ]
+            ),
+            vplot.Subplot(
+                col=1,
+                row=len(price_subplots) + 4,
+                traces=[
+                    vplot.Step(
+                        x=table.index,
+                        y=table[self.datainfo['total'].name],
+                        color=vplot.CSSColor.GREEN,
+                        width=1.0,
+                        name='total',
+                        showlegend=False,
+                        showannotation=True,
+                    ),
+                ]
+            ),
+            vplot.LogicSignalSubplot(
+                col=1,
+                row=len(price_subplots) + 5,
+                yshift=1.2,
+                steps=[
+                    vplot.Step(
+                        x=table.index,
+                        y=table[self.opgens['alarm'].datainfo['alarm'].name],
+                        color=vplot.CSSColor.BLACK,
+                        width=1.0,
+                        name='alarm',
+                        showlegend=False,
+                        showannotation=True,
+                    )
+                ]
+            ),
+        ]
+        return subplots
