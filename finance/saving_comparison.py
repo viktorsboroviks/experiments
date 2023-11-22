@@ -3,6 +3,7 @@ Experiment for testing money saving.
 '''
 import datetime
 import vfin
+import vstats
 import vtime
 import strategies.saving
 import strategies.money_avg
@@ -37,9 +38,11 @@ vfin.BacktestEngine(
     money_avg_opgen.ops()
 ).run()
 
-print(saving1_opgen.total(data.big_table()))
-print(saving2_opgen.total(data.big_table()))
-print(money_avg_opgen.total(data.big_table()))
+vstats.print_trading_results({
+    'const': data.big_table()[saving1_opgen.datainfo['total'].name],
+    'saving': data.big_table()[saving2_opgen.datainfo['total'].name],
+    'money_avg': data.big_table()[money_avg_opgen.datainfo['total'].name],
+    })
 
 # debug
 saving1_opgen.debug_plot(data.big_table(), 'test_saving1.svg')
