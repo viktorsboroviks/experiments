@@ -38,11 +38,17 @@ vfin.BacktestEngine(
     money_avg_opgen.ops()
 ).run()
 
-vstats.print_trading_results({
-    'const': data.big_table()[saving1_opgen.datainfo['total'].name],
-    'saving': data.big_table()[saving2_opgen.datainfo['total'].name],
-    'money_avg': data.big_table()[money_avg_opgen.datainfo['total'].name],
-    })
+vstats.print_results([
+    vstats.StrategyInfo('const', saving1_opgen, data.big_table()),
+    vstats.StrategyInfo('saving', saving2_opgen, data.big_table()),
+    vstats.StrategyInfo('money_avg', money_avg_opgen, data.big_table()),
+    ])
+
+vstats.plot_results([
+    vstats.StrategyInfo('const', saving1_opgen, data.big_table()),
+    vstats.StrategyInfo('saving', saving2_opgen, data.big_table()),
+    vstats.StrategyInfo('money_avg', money_avg_opgen, data.big_table()),
+    ], 'test_results.svg')
 
 # debug
 saving1_opgen.debug_plot(data.big_table(), 'test_saving1.svg')

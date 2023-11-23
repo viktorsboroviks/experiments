@@ -1,18 +1,5 @@
 # TODO
 
-- add separate tool/function to compare strategy results
-  - all results compared
-    - min drawback
-    - max gain
-- add vstat function to plot trading results
-- calculate perfect trading function (knowing future)
-  - long + short
-  - only long
-  - only short
-  - could be used as an "answer"/reference strategy
-  - can try to find correlations with it for other strategies
-- highlight with red lint results / include only those
-- fix '/bin/sh: 1: hadolint: Exec format error' in make lint
 - split
   - tools
     - examples (leave #1 and #2, convert #3 to experiment)
@@ -40,12 +27,6 @@
     - saving
     - buy and hold
     - sma cross
-  - every table has standard columns for every strategy
-    - total_value
-    - total_cash
-    - total_used
-  - function to parse table and plot
-    - total_value, free, used for different strategies
   - find optimal sma cross parameters for daily
     - SPX, BTC, F, TSLA, NVDIA
     - plot beautiful visuals
