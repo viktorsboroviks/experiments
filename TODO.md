@@ -1,17 +1,26 @@
 # TODO
 
+- add separate tool/function to compare strategy results
+  - all results compared
+    - min drawback
+    - max gain
+- add vstat function to plot trading results
+- calculate perfect trading function (knowing future)
+  - long + short
+  - only long
+  - only short
+  - could be used as an "answer"/reference strategy
+  - can try to find correlations with it for other strategies
 - highlight with red lint results / include only those
 - fix '/bin/sh: 1: hadolint: Exec format error' in make lint
 - split
   - tools
-    - fin
-    - plot
     - examples (leave #1 and #2, convert #3 to experiment)
   - experiments
     - strategies
     - experiments
     - make for all (fetch version of tools and build)
-- add first experiment - sma cross via investing
+- add first experiment sma cross via investing
   - strategy: vbfin - new virtual class: Strategy
     - in: mandatory init params
       - initial_cash
