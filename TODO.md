@@ -1,5 +1,15 @@
 # TODO
 
+## goal
+
+- inspiring, fantastically beautiful graphs
+
+## tasks
+
+- try mpl for
+  - grid with subplots
+  - crosshair in html
+  - crosshair across subplots all at once
 - split
   - tools
     - examples (leave #1 and #2, convert #3 to experiment)
@@ -27,9 +37,10 @@
     - saving
     - buy and hold
     - sma cross
-  - find optimal sma cross parameters for daily
-    - SPX, BTC, F, TSLA, NVDIA
-    - plot beautiful visuals
+      - long only
+      - short only
+      - long and short
+  - find optimal sma cross parameters for daily SPX
 
 - publish tool
 - publish sma cross experiment

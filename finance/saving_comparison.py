@@ -48,9 +48,9 @@ vstats.plot_results([
     vstats.StrategyInfo('const', saving1_opgen, data.big_table()),
     vstats.StrategyInfo('saving', saving2_opgen, data.big_table()),
     vstats.StrategyInfo('money_avg', money_avg_opgen, data.big_table()),
-    ], 'test_results.svg')
+    ], 'test_results.html')
 
 # debug
-saving1_opgen.debug_plot(data.big_table(), 'test_saving1.svg')
-saving2_opgen.debug_plot(data.big_table(), 'test_saving2.svg')
-money_avg_opgen.debug_plot(data.big_table(), 'test_money_avg.svg')
+saving1_opgen.debug_plot(data.big_table(), 'test_saving1.html')
+saving2_opgen.debug_plot(data.big_table(), 'test_saving2.html')
+money_avg_opgen.debug_plot(data.big_table(), 'test_money_avg.html')
