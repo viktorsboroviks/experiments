@@ -1,5 +1,5 @@
 TOOLS_GIT = git@github.com:viktorsboroviks/tools.git
-TOOLS_BRANCH = v1.6
+TOOLS_BRANCH = origin/master
 TOOLS_PATH = tools
 
 .PHONY: all \
@@ -20,17 +20,20 @@ setup: $(TOOLS_PATH)
 
 run-experiments: run-finance
 
-#run-finance: setup
-#	cd finance/1_simple_examples; ../../$(TOOLS_PATH)/scripts/env_fin.sh \
-#		python3 backtest_plotly.py
-#	cd finance/1_simple_examples; ../../$(TOOLS_PATH)/scripts/env_fin.sh \
-#		python3 backtest_vbplot.py
+run-finance: setup
+	cd finance/ ../../$(TOOLS_PATH)/scripts/env_fin.sh \
+		python3 alarm.py
+	cd finance/ ../../$(TOOLS_PATH)/scripts/env_fin.sh \
+		python3 price.py
+	cd finance/ ../../$(TOOLS_PATH)/scripts/env_fin.sh \
+		python3 saving_comparison.py
 
 # remove temporary files
 clean:
 	rm -rfv `find . -name __pycache__`
 	rm -rfv `find . -name __vbfin_cache__`
 	rm -rfv `find . -name *.svg`
+	rm -rfv `find . -name *.html`
 
 # remove all files produced by `make`
 distclean: clean

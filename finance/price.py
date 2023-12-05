@@ -22,3 +22,4 @@ vfin.BacktestEngine(
 ).run()
 
 price_opgen.debug_plot(data.big_table(), 'test_price.svg')
+price_opgen.debug_plot(data.big_table(), 'test_price.html')

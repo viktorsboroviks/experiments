@@ -6,37 +6,11 @@
 
 ## tasks
 
-- try mpl for
-  - grid with subplots
-  - crosshair in html
-  - crosshair across subplots all at once
-- split
-  - tools
-    - examples (leave #1 and #2, convert #3 to experiment)
-  - experiments
-    - strategies
-    - experiments
-    - make for all (fetch version of tools and build)
 - add first experiment sma cross via investing
-  - strategy: vbfin - new virtual class: Strategy
-    - in: mandatory init params
-      - initial_cash
-      - add_cash_period
-      - add_cash_value
-      - for every ticker
-        - min_traded_quantity
-        - margin
-        - leverage
-        - slippage
-        - short_overnight_interest
-        - long_overnight_interest
-    - in: optional init params
-    - out: get_ops
-    - out: plot_debug
   - strategies - in experiments
     - saving
     - buy and hold
-    - sma cross
+    - sma cross (or RSI)
       - long only
       - short only
       - long and short
@@ -81,6 +55,21 @@
 - describe in article
 - create ibkr or binance account
 - setup bot
+
+strategies:
+
+- how to find the best strategy?
+  - take some rule to buy/sell, parametrize, find best parameters
+  - create a probabalistic heatmap of the market future, based on indicators
+    - list indicators
+    - for every indicator find probability distribution over time for
+      predicting a market move from current point to some quadrant
+      - e.g. after sma20>sma5
+        - price goest up
+          - probability of it over time to stop at a particular distance range
+            from the starting point
+          - higher probability - brighter heatmap
+    - overlap indicators
 
 suggestions:
 

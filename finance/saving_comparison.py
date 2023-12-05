@@ -16,17 +16,17 @@ data = vfin.Data({
 
 monthly_alarm = vtime.Alarm('monthly')
 saving1_opgen = strategies.saving.SavingOpGen(
-    initial_value=1000)
+    initial_cash=1000)
 
 saving2_opgen = strategies.saving.SavingOpGen(
-    initial_value=1000,
-    add_value=100,
-    add_alarm=monthly_alarm)
+    initial_cash=1000,
+    add_cash=100,
+    add_cash_alarm=monthly_alarm)
 
 money_avg_opgen = strategies.money_avg.MoneyAvgOpGen(
-    initial_value=1000,
-    add_value=100,
-    add_alarm=monthly_alarm,
+    initial_cash=1000,
+    add_cash=100,
+    add_cash_alarm=monthly_alarm,
     price_di=vfin.DataInfo('^SPX', 'Close'),
     price_slippage_pct=0.5
 )

@@ -14,17 +14,17 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
     Generate an operation sequence for money averaging over time.
 
     Args:
-        initial_value: initial cash
-        add_value: cash that is added periodically
-        add_alarm: alarm for adding cash
+        initial_cash: initial cash
+        add_cash: cash that is added periodically
+        add_cash_alarm: alarm for adding cash
         price_di: price data for buying/selling asset
         price_slippage_pct: price slippage in percents
     '''
     # pylint: disable=too-many-arguments
     def __init__(self,
-                 initial_value: float,
-                 add_value: float,
-                 add_alarm: vtime.Alarm,
+                 initial_cash: float,
+                 add_cash: float,
+                 add_cash_alarm: vtime.Alarm,
                  price_di: vfin.DataInfo,
                  price_slippage_pct: typing.Union[int, float] = 0.5):
 
@@ -38,21 +38,21 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
         self.price_slippage_pct = price_slippage_pct
 
         vfin_ops.TradingOpGen.__init__(self,
-                                       initial_value,
-                                       add_value,
-                                       add_alarm)
+                                       initial_cash,
+                                       add_cash,
+                                       add_cash_alarm)
 
         # total worth
-        self.datainfo['total'] = vfin.DataInfo(self.name,
+        self.di['total'] = vfin.DataInfo(self.name,
                                                'total')
-        self.datainfo['cash'] = vfin.DataInfo(self.name,
+        self.di['cash'] = vfin.DataInfo(self.name,
                                               'cash',
-                                              first_value=self.initial_value)
-        self.datainfo['asset'] = vfin.DataInfo(self.name,
+                                              first_value=self.initial_cash)
+        self.di['asset'] = vfin.DataInfo(self.name,
                                                'asset',
                                                first_value=0)
 
-        self.opgens['alarm'] = vfin_ops.AlarmOpGen(self.add_alarm)
+        self.opgens['alarm'] = vfin_ops.AlarmOpGen(self.add_cash_alarm)
         self.opgens['price'] = vfin_ops.PriceOpGen(self.price_di,
                                                    self.price_slippage_pct)
 
@@ -68,46 +68,46 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
         ops += [
             # move assets from previous datetime
             vfin_ops.Call(function=lambda x: x[-2],
-                          kwargs={'x': self.datainfo['cash']},
-                          ret=self.datainfo['cash']),
+                          kwargs={'x': self.di['cash']},
+                          ret=self.di['cash']),
             vfin_ops.Call(function=lambda x: x[-2],
-                          kwargs={'x': self.datainfo['asset']},
-                          ret=self.datainfo['asset']),
+                          kwargs={'x': self.di['asset']},
+                          ret=self.di['asset']),
             vfin_ops.Call(function=lambda x: x[-2],
-                          kwargs={'x': self.datainfo['total']},
-                          ret=self.datainfo['total']),
+                          kwargs={'x': self.di['total']},
+                          ret=self.di['total']),
 
             # receive monthly deposit
             vfin_ops.Call(function=lambda m, x: \
-                          (x[-1] + self.add_value) if m[-1] else x[-1],
-                          kwargs={'m': self.opgens['alarm'].datainfo['alarm'],
-                                  'x': self.datainfo['cash']},
-                          ret=self.datainfo['cash']),
+                          (x[-1] + self.add_cash) if m[-1] else x[-1],
+                          kwargs={'m': self.opgens['alarm'].di['signal'],
+                                  'x': self.di['cash']},
+                          ret=self.di['cash']),
             # buy asset
             vfin_ops.Call(function=lambda b, asset, cash, buy_price: \
                           (asset[-1] + cash[-1]/buy_price[-1]) if b[-1] else asset[-1],
-                          kwargs={'b': self.opgens['alarm'].datainfo['alarm'],
-                                  'asset': self.datainfo['asset'],
-                                  'cash': self.datainfo['cash'],
-                                  'buy_price': self.opgens['price'].datainfo['buy']},
-                          ret=self.datainfo['asset']),
+                          kwargs={'b': self.opgens['alarm'].di['signal'],
+                                  'asset': self.di['asset'],
+                                  'cash': self.di['cash'],
+                                  'buy_price': self.opgens['price'].di['buy']},
+                          ret=self.di['asset']),
             # update cash
             vfin_ops.Call(function=lambda b, cash: \
                           0 if b[-1] else cash[-1],
-                          kwargs={'b': self.opgens['alarm'].datainfo['alarm'],
-                                  'cash': self.datainfo['cash']},
-                          ret=self.datainfo['cash']),
+                          kwargs={'b': self.opgens['alarm'].di['signal'],
+                                  'cash': self.di['cash']},
+                          ret=self.di['cash']),
             # total worth (in cash)
             vfin_ops.Call(function=lambda cash, asset, sell_price: \
                           cash[-1] + (asset[-1] * sell_price[-1]),
-                          kwargs={'cash': self.datainfo['cash'],
-                                  'asset': self.datainfo['asset'],
-                                  'sell_price': self.opgens['price'].datainfo['sell']},
-                          ret=self.datainfo['total']),
+                          kwargs={'cash': self.di['cash'],
+                                  'asset': self.di['asset'],
+                                  'sell_price': self.opgens['price'].di['sell']},
+                          ret=self.di['total']),
         ]
         return ops
 
-    def debug_subplots(self, table):
+    def debug_subplots(self, table) -> list[vplot.Subplot]:
         '''
         Return a list of debug subplots.
         Also used to draw debug_plot()
@@ -124,7 +124,7 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
                 traces=[
                     vplot.Step(
                         x=table.index,
-                        y=table[self.datainfo['cash'].name],
+                        y=table[self.di['cash'].name],
                         color=vplot.CSSColor.BLACK,
                         width=1.0,
                         name='cash',
@@ -139,7 +139,7 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
                 traces=[
                     vplot.Step(
                         x=table.index,
-                        y=table[self.datainfo['asset'].name].diff(),
+                        y=table[self.di['asset'].name].diff(),
                         color=vplot.CSSColor.BLUE,
                         width=1.0,
                         name='asset change',
@@ -154,7 +154,7 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
                 traces=[
                     vplot.Step(
                         x=table.index,
-                        y=table[self.datainfo['asset'].name],
+                        y=table[self.di['asset'].name],
                         color=vplot.CSSColor.BLUE,
                         width=1.0,
                         name='asset',
@@ -169,7 +169,7 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
                 traces=[
                     vplot.Step(
                         x=table.index,
-                        y=table[self.datainfo['total'].name],
+                        y=table[self.di['total'].name],
                         color=vplot.CSSColor.GREEN,
                         width=1.0,
                         name='total',
@@ -185,7 +185,7 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
                 steps=[
                     vplot.Step(
                         x=table.index,
-                        y=table[self.opgens['alarm'].datainfo['alarm'].name],
+                        y=table[self.opgens['alarm'].di['signal'].name],
                         color=vplot.CSSColor.BLACK,
                         width=1.0,
                         name='alarm',
