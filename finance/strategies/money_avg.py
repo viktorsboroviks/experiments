@@ -44,13 +44,13 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
 
         # total worth
         self.di['total'] = vfin.DataInfo(self.name,
-                                               'total')
+                                         'total')
         self.di['cash'] = vfin.DataInfo(self.name,
-                                              'cash',
-                                              first_value=self.initial_cash)
+                                        'cash',
+                                        first_value=self.initial_cash)
         self.di['asset'] = vfin.DataInfo(self.name,
-                                               'asset',
-                                               first_value=0)
+                                         'asset',
+                                         first_value=0)
 
         self.opgens['alarm'] = vfin_ops.AlarmOpGen(self.add_cash_alarm)
         self.opgens['price'] = vfin_ops.PriceOpGen(self.price_di,

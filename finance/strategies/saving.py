@@ -22,8 +22,8 @@ class SavingOpGen(vfin_ops.TradingOpGen):
                                        add_cash_alarm)
 
         self.di['total'] = vfin.DataInfo(self.name,
-                                               'total',
-                                               first_value=initial_cash)
+                                         'total',
+                                         first_value=initial_cash)
         if add_cash:
             self.opgens['alarm'] = vfin_ops.AlarmOpGen(add_cash_alarm)
 
