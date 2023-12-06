@@ -3,6 +3,7 @@ SMA cross strategy.
 '''
 
 import typing
+import talib as ta
 import vfin
 import vfin_ops
 import vtime
@@ -70,28 +71,133 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
                 raise TypeError
 
         self.coefs = coefs
+        self._init_di_coefs()
 
-    def ops_long_entry(self):
+    def _init_di_coefs(self):
+        self.di['long entry fast sma'] = vfin.DataInfo(self.name,
+                                                       'long entry fast sma')
+        self.di['long entry slow sma'] = vfin.DataInfo(self.name,
+                                                       'long entry slow sma')
+        self.di['long exit fast sma'] = vfin.DataInfo(self.name,
+                                                      'long exit fast sma')
+        self.di['long exit slow sma'] = vfin.DataInfo(self.name,
+                                                      'long exit slow sma')
+        self.di['short entry fast sma'] = vfin.DataInfo(self.name,
+                                                        'short entry fast sma')
+        self.di['short entry slow sma'] = vfin.DataInfo(self.name,
+                                                        'short entry slow sma')
+        self.di['short exit fast sma'] = vfin.DataInfo(self.name,
+                                                       'short exit fast sma')
+        self.di['short exit slow sma'] = vfin.DataInfo(self.name,
+                                                       'short exit slow sma')
+
+    def ops_prepare(self) -> list[vfin.Operation]:
         '''
+        Perform preparation operations before the main cycle.
+
         Generate operations to:
-        - Calculate long entry signal into self.di['long entry signal']
-        - Calculate long cash diff self.di['long cash diff']
+        - Calculate SMAs
         '''
-        # TODO: Add
-        # TODO: Update docstring
-        pass
+        ops = [
+            vfin_ops.Call(
+                function=lambda price:
+                    ta.SMA(price, self.long_entry_fast_sma)[-1],
+                kwargs={'price': self.opgen['price close'].di['src']},
+                ret=self.di['long entry fast sma']),
+            vfin_ops.Call(
+                function=lambda price:
+                    ta.SMA(price, self.long_entry_slow_sma)[-1],
+                kwargs={'price': self.opgen['price close'].di['src']},
+                ret=self.di['long entry slow sma']),
+            vfin_ops.Call(
+                function=lambda price:
+                    ta.SMA(price, self.long_exit_fast_sma)[-1],
+                kwargs={'price': self.opgen['price close'].di['src']},
+                ret=self.di['long exit fast sma']),
+            vfin_ops.Call(
+                function=lambda price:
+                    ta.SMA(price, self.long_exit_slow_sma)[-1],
+                kwargs={'price': self.opgen['price close'].di['src']},
+                ret=self.di['long exit slow sma']),
+            vfin_ops.Call(
+                function=lambda price:
+                    ta.SMA(price, self.short_entry_fast_sma)[-1],
+                kwargs={'price': self.opgen['price close'].di['src']},
+                ret=self.di['short entry fast sma']),
+            vfin_ops.Call(
+                function=lambda price:
+                    ta.SMA(price, self.short_entry_slow_sma)[-1],
+                kwargs={'price': self.opgen['price close'].di['src']},
+                ret=self.di['short entry slow sma']),
+            vfin_ops.Call(
+                function=lambda price:
+                    ta.SMA(price, self.short_exit_fast_sma)[-1],
+                kwargs={'price': self.opgen['price close'].di['src']},
+                ret=self.di['short exit fast sma']),
+            vfin_ops.Call(
+                function=lambda price:
+                    ta.SMA(price, self.short_exit_slow_sma)[-1],
+                kwargs={'price': self.opgen['price close'].di['src']},
+                ret=self.di['short exit slow sma']),
+        ]
+        return ops
 
-    def ops_long_exit(self):
-        # TODO: Add
-        # TODO: Update docstring
-        pass
+    def ops_long_entry_signal(self) -> list[vfin.Operation]:
+        '''
+        Long entry signal.
 
-    def ops_short_entry(self):
-        # TODO: Add
-        # TODO: Update docstring
-        pass
+        Generate operations to:
+        - Calculate long entry signal self.di['long entry signal']
+        '''
+        ops = [
+            vfin_ops.Call(function=lambda fast, slow: fast[-1] > slow[-1],
+                          kwargs={'fast': self.di['long entry fast sma'],
+                                  'slow': self.di['long entry slow sma']},
+                          ret=self.di['long entry signal']),
+        ]
+        return ops
 
-    def ops_short_exit(self):
-        # TODO: Add
-        # TODO: Update docstring
-        pass
+    def ops_long_exit_signal(self) -> list[vfin.Operation]:
+        '''
+        Long exit signal.
+
+        Generate operations to:
+        - Calculate long exit signal self.di['long exit signal']
+        '''
+        ops = [
+            vfin_ops.Call(function=lambda fast, slow: fast[-1] < slow[-1],
+                          kwargs={'fast': self.di['long exit fast sma'],
+                                  'slow': self.di['long exit slow sma']},
+                          ret=self.di['long exit signal']),
+        ]
+        return ops
+
+    def ops_short_entry_signal(self) -> list[vfin.Operation]:
+        '''
+        Short entry signal.
+
+        Generate operations to:
+        - Calculate short entry signal self.di['short entry signal']
+        '''
+        ops = [
+            vfin_ops.Call(function=lambda fast, slow: fast[-1] < slow[-1],
+                          kwargs={'fast': self.di['short entry fast sma'],
+                                  'slow': self.di['short entry slow sma']},
+                          ret=self.di['short entry signal']),
+        ]
+        return ops
+
+    def ops_short_exit_signal(self) -> list[vfin.Operation]:
+        '''
+        short exit signal.
+
+        Generate operations to:
+        - Calculate short exit signal self.di['short exit signal']
+        '''
+        ops = [
+            vfin_ops.Call(function=lambda fast, slow: fast[-1] > slow[-1],
+                          kwargs={'fast': self.di['short exit fast sma'],
+                                  'slow': self.di['short exit slow sma']},
+                          ret=self.di['short exit signal']),
+        ]
+        return ops
