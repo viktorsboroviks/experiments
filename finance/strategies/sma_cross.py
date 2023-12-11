@@ -6,6 +6,7 @@ import typing
 import talib as ta
 import vfin
 import vfin_ops
+import vplot
 import vtime
 
 
@@ -23,6 +24,15 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
 
     SMA coefficients for Long and Short may differ.
     '''
+    COEFS = ('long entry fast sma',
+             'long entry slow sma',
+             'long exit fast sma',
+             'long exit slow sma',
+             'short entry fast sma',
+             'short entry slow sma',
+             'short exit fast sma',
+             'short exit slow sma')
+
     # pylint: disable=too-many-arguments
     def __init__(self,
                  coefs: dict[str, int],
@@ -35,61 +45,46 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
 
         Args:
             coefs: int SMA coefficients, allowed keys are:
-                'long_entry_fast_sma',
-                'long_entry_slow_sma',
-                'long_exit_fast_sma',
-                'long_exit_slow_sma',
-                'short_entry_fast_sma',
-                'short_entry_slow_sma',
-                'short_exit_fast_sma',
-                'short_exit_slow_sma'.
+                'long entry fast sma',
+                'long entry slow sma',
+                'long exit fast sma',
+                'long exit slow sma',
+                'short entry fast sma',
+                'short entry slow sma',
+                'short exit fast sma',
+                'short exit slow sma'.
             initial_cash
             add_cash: the amount of cash to be added
             add_cash_alarm: rules for adding the `add_cash` amount
             price_info: description of the asset price data
         '''
+        if not price_info.close_di:
+            raise ValueError
+        if not isinstance(coefs, dict):
+            raise TypeError
+        for k, v in coefs.items():
+            if k not in self.COEFS:
+                raise ValueError
+            if not isinstance(v, int):
+                raise TypeError
+
+        self.coefs = {}
+        for c in self.COEFS:
+            if c in coefs:
+                self.coefs[c] = coefs[c]
+            else:
+                self.coefs[c] = 0
+
         vfin_ops.TradingOpGen.__init__(self,
                                        initial_cash=initial_cash,
                                        add_cash=add_cash,
                                        add_cash_alarm=add_cash_alarm,
                                        price_info=price_info)
-        if not price_info.di_close:
-            raise ValueError
-        if not isinstance(coefs, dict):
-            raise TypeError
-        for k, v in coefs.items():
-            if k not in ('long_entry_fast_sma',
-                         'long_entry_slow_sma',
-                         'long_exit_fast_sma',
-                         'long_exit_slow_sma',
-                         'short_entry_fast_sma',
-                         'short_entry_slow_sma',
-                         'short_exit_fast_sma',
-                         'short_exit_slow_sma'):
-                raise ValueError
-            if not isinstance(v, int):
-                raise TypeError
-
-        self.coefs = coefs
         self._init_di_coefs()
 
     def _init_di_coefs(self):
-        self.di['long entry fast sma'] = vfin.DataInfo(self.name,
-                                                       'long entry fast sma')
-        self.di['long entry slow sma'] = vfin.DataInfo(self.name,
-                                                       'long entry slow sma')
-        self.di['long exit fast sma'] = vfin.DataInfo(self.name,
-                                                      'long exit fast sma')
-        self.di['long exit slow sma'] = vfin.DataInfo(self.name,
-                                                      'long exit slow sma')
-        self.di['short entry fast sma'] = vfin.DataInfo(self.name,
-                                                        'short entry fast sma')
-        self.di['short entry slow sma'] = vfin.DataInfo(self.name,
-                                                        'short entry slow sma')
-        self.di['short exit fast sma'] = vfin.DataInfo(self.name,
-                                                       'short exit fast sma')
-        self.di['short exit slow sma'] = vfin.DataInfo(self.name,
-                                                       'short exit slow sma')
+        for c in self.COEFS:
+            self.di[c] = vfin.DataInfo(self.name, c)
 
     def ops_prepare(self) -> list[vfin.Operation]:
         '''
@@ -98,48 +93,20 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         Generate operations to:
         - Calculate SMAs
         '''
-        ops = [
-            vfin_ops.Call(
-                function=lambda price:
-                    ta.SMA(price, self.long_entry_fast_sma)[-1],
-                kwargs={'price': self.opgen['price close'].di['src']},
-                ret=self.di['long entry fast sma']),
-            vfin_ops.Call(
-                function=lambda price:
-                    ta.SMA(price, self.long_entry_slow_sma)[-1],
-                kwargs={'price': self.opgen['price close'].di['src']},
-                ret=self.di['long entry slow sma']),
-            vfin_ops.Call(
-                function=lambda price:
-                    ta.SMA(price, self.long_exit_fast_sma)[-1],
-                kwargs={'price': self.opgen['price close'].di['src']},
-                ret=self.di['long exit fast sma']),
-            vfin_ops.Call(
-                function=lambda price:
-                    ta.SMA(price, self.long_exit_slow_sma)[-1],
-                kwargs={'price': self.opgen['price close'].di['src']},
-                ret=self.di['long exit slow sma']),
-            vfin_ops.Call(
-                function=lambda price:
-                    ta.SMA(price, self.short_entry_fast_sma)[-1],
-                kwargs={'price': self.opgen['price close'].di['src']},
-                ret=self.di['short entry fast sma']),
-            vfin_ops.Call(
-                function=lambda price:
-                    ta.SMA(price, self.short_entry_slow_sma)[-1],
-                kwargs={'price': self.opgen['price close'].di['src']},
-                ret=self.di['short entry slow sma']),
-            vfin_ops.Call(
-                function=lambda price:
-                    ta.SMA(price, self.short_exit_fast_sma)[-1],
-                kwargs={'price': self.opgen['price close'].di['src']},
-                ret=self.di['short exit fast sma']),
-            vfin_ops.Call(
-                function=lambda price:
-                    ta.SMA(price, self.short_exit_slow_sma)[-1],
-                kwargs={'price': self.opgen['price close'].di['src']},
-                ret=self.di['short exit slow sma']),
-        ]
+        ops = []
+        for c in self.COEFS:
+            if self.coefs[c]:
+                ops += [
+                    vfin_ops.Call(
+                        function=lambda x, d: ta.SMA(x, d)[-1],
+                        kwargs={'x': self.opgens['price close'].di['src'],
+                                'd': self.coefs[c]},
+                        ret=self.di[c]),
+                ]
+            else:
+                ops += [
+                    vfin_ops.Set(0, self.di[c])
+                ]
         return ops
 
     def ops_long_entry_signal(self) -> list[vfin.Operation]:
@@ -149,6 +116,9 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         Generate operations to:
         - Calculate long entry signal self.di['long entry signal']
         '''
+        if not self.coefs['long entry slow sma'] \
+                or not self.coefs['long entry fast sma']:
+            return []
         ops = [
             vfin_ops.Call(function=lambda fast, slow: fast[-1] > slow[-1],
                           kwargs={'fast': self.di['long entry fast sma'],
@@ -164,6 +134,9 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         Generate operations to:
         - Calculate long exit signal self.di['long exit signal']
         '''
+        if not self.coefs['long exit slow sma'] \
+                or not self.coefs['long exit fast sma']:
+            return []
         ops = [
             vfin_ops.Call(function=lambda fast, slow: fast[-1] < slow[-1],
                           kwargs={'fast': self.di['long exit fast sma'],
@@ -179,6 +152,9 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         Generate operations to:
         - Calculate short entry signal self.di['short entry signal']
         '''
+        if not self.coefs['short entry slow sma'] \
+                or not self.coefs['short entry fast sma']:
+            return []
         ops = [
             vfin_ops.Call(function=lambda fast, slow: fast[-1] < slow[-1],
                           kwargs={'fast': self.di['short entry fast sma'],
@@ -194,6 +170,9 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         Generate operations to:
         - Calculate short exit signal self.di['short exit signal']
         '''
+        if not self.coefs['short exit slow sma'] \
+                or not self.coefs['short exit fast sma']:
+            return []
         ops = [
             vfin_ops.Call(function=lambda fast, slow: fast[-1] > slow[-1],
                           kwargs={'fast': self.di['short exit fast sma'],
@@ -201,3 +180,98 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
                           ret=self.di['short exit signal']),
         ]
         return ops
+
+    def debug_subplots(self, table) -> list[vplot.Subplot]:
+        '''
+        Return a list of debug subplots.
+        Also used to draw debug_plot().
+
+        Args:
+            table: pd.DataFrame object containing the data to debug.
+        '''
+        subplots = vfin_ops.TradingOpGen.debug_subplots(self, table)
+        subplots += [
+            vplot.Subplot(
+                col=1,
+                row=len(subplots) + 1,
+                traces=[
+                    vplot.Scatter(
+                        x=table.index,
+                        y=table[self.di['long entry fast sma'].name],
+                        color=vplot.CSSColor.RED,
+                        width=1.0,
+                        mode='lines',
+                        name='long entry fast sma'),
+                    vplot.Scatter(
+                        x=table.index,
+                        y=table[self.di['long entry slow sma'].name],
+                        color=vplot.CSSColor.BLUE,
+                        width=1.0,
+                        mode='lines',
+                        name='long entry slow sma'),
+                ]
+            ),
+            vplot.Subplot(
+                col=1,
+                row=len(subplots) + 2,
+                traces=[
+                    vplot.Scatter(
+                        x=table.index,
+                        y=table[self.di['long exit fast sma'].name],
+                        color=vplot.CSSColor.RED,
+                        width=1.0,
+                        mode='lines',
+                        name='long exit fast sma'),
+                    vplot.Scatter(
+                        x=table.index,
+                        y=table[self.di['long exit slow sma'].name],
+                        color=vplot.CSSColor.BLUE,
+                        width=1.0,
+                        mode='lines',
+                        name='long exit slow sma'),
+                ]
+            ),
+            vplot.Subplot(
+                col=1,
+                row=len(subplots) + 3,
+                traces=[
+                    vplot.Scatter(
+                        x=table.index,
+                        y=table[self.di['short entry fast sma'].name],
+                        color=vplot.CSSColor.RED,
+                        width=1.0,
+                        mode='lines',
+                        name='short entry fast sma'),
+                    vplot.Scatter(
+                        x=table.index,
+                        y=table[self.di['short entry slow sma'].name],
+                        color=vplot.CSSColor.BLUE,
+                        width=1.0,
+                        mode='lines',
+                        name='short entry slow sma'),
+                ]
+            ),
+            vplot.Subplot(
+                col=1,
+                row=len(subplots) + 4,
+                traces=[
+                    vplot.Scatter(
+                        x=table.index,
+                        y=table[self.di['short exit fast sma'].name],
+                        color=vplot.CSSColor.RED,
+                        width=1.0,
+                        mode='lines',
+                        name='short exit fast sma'),
+                    vplot.Scatter(
+                        x=table.index,
+                        y=table[self.di['short exit slow sma'].name],
+                        color=vplot.CSSColor.BLUE,
+                        width=1.0,
+                        mode='lines',
+                        name='short exit slow sma'),
+                ]
+            )
+        ]
+        return subplots
+        # TODO: create a way to return only part of debug (definite subplots),
+        #       not all
