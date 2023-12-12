@@ -43,8 +43,9 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
         - Calculate long entry signal self.di['long entry signal']
         '''
         ops = [
-            vfin_ops.Call(function=lambda x: x[-1],
-                          kwargs={'x': self.opgens['add cash alarm'].di['signal']},
-                          ret=self.di['long entry signal'])
+            vfin_ops.Call(
+                function=lambda x: x[-1],
+                kwargs={'x': self.opgens['add cash alarm'].di['signal']},
+                ret=self.di['long entry signal'])
         ]
         return ops

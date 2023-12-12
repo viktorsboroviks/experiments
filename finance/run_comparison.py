@@ -39,35 +39,60 @@ sma_cross_opgen = strategies.sma_cross.SmaCrossOpGen(
     coefs={'long entry slow sma': 200,
            'long entry fast sma': 50,
            'long exit slow sma': 200,
-           'long exit fast sma': 50}
-)
-#           'short entry slow sma': 200,
-#           'short entry fast sma': 50,
-#           'short exit slow sma': 200,
-#           'short exit fast sma': 50,
-#    })
-# TODO: investigate and fix
+           'long exit fast sma': 50,
+           'short entry slow sma': 200,
+           'short entry fast sma': 50,
+           'short exit slow sma': 200,
+           'short exit fast sma': 50})
+
+sma_cross_long_opgen = strategies.sma_cross.SmaCrossOpGen(
+    price_info=instrument,
+    initial_cash=1000,
+    add_cash=100,
+    add_cash_alarm=monthly_alarm,
+    coefs={'long entry slow sma': 200,
+           'long entry fast sma': 50,
+           'long exit slow sma': 200,
+           'long exit fast sma': 50})
+
+sma_cross_short_opgen = strategies.sma_cross.SmaCrossOpGen(
+    price_info=instrument,
+    initial_cash=1000,
+    add_cash=100,
+    add_cash_alarm=monthly_alarm,
+    coefs={'short entry slow sma': 200,
+           'short entry fast sma': 50,
+           'short exit slow sma': 200,
+           'short exit fast sma': 50})
 
 vfin.BacktestEngine(
     data,
     saving_opgen.ops() +
     money_avg_opgen.ops() +
-    sma_cross_opgen.ops()
+    sma_cross_opgen.ops() +
+    sma_cross_long_opgen.ops() +
+    sma_cross_short_opgen.ops()
 ).run()
 
 vstats.print_results([
     vstats.StrategyInfo('saving', saving_opgen, data.big_table()),
     vstats.StrategyInfo('money_avg', money_avg_opgen, data.big_table()),
     vstats.StrategyInfo('sma_cross', sma_cross_opgen, data.big_table()),
+    vstats.StrategyInfo('sma_cross_long', sma_cross_long_opgen, data.big_table()),
+    vstats.StrategyInfo('sma_cross_short', sma_cross_short_opgen, data.big_table()),
     ])
 
 vstats.plot_results([
     vstats.StrategyInfo('saving', saving_opgen, data.big_table()),
     vstats.StrategyInfo('money_avg', money_avg_opgen, data.big_table()),
     vstats.StrategyInfo('sma_cross', sma_cross_opgen, data.big_table()),
+    vstats.StrategyInfo('sma_cross_long', sma_cross_long_opgen, data.big_table()),
+    vstats.StrategyInfo('sma_cross_short', sma_cross_short_opgen, data.big_table()),
     ], 'test_results.html')
 
 # debug
 saving_opgen.debug_plot(data.big_table(), 'test_saving.html')
 money_avg_opgen.debug_plot(data.big_table(), 'test_money_avg.html')
 sma_cross_opgen.debug_plot(data.big_table(), 'test_sma_cross.html')
+sma_cross_long_opgen.debug_plot(data.big_table(), 'test_sma_cross_long.html')
+sma_cross_short_opgen.debug_plot(data.big_table(), 'test_sma_cross_short.html')
