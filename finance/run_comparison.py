@@ -10,12 +10,12 @@ import strategies.money_avg
 import strategies.sma_cross
 
 instrument = vfin.InstrumentInfo(ticker_name='^SPX',
-                                 close_di=vfin.DataInfo('^SPX', 'Close'),
+                                 di={'price close': vfin.DataInfo('^SPX', 'Close')},
                                  slippage=0.5)
 
 data = vfin.Data({
     '^SPX': vfin.fetch_ticker('^SPX',
-                              start=datetime.datetime(2000, 1, 1),
+                              start=datetime.datetime(1990, 1, 1),
                               end=datetime.datetime(2023, 11, 1))
 })
 monthly_alarm = vtime.Alarm('monthly')
@@ -88,7 +88,7 @@ vstats.plot_results([
     vstats.StrategyInfo('sma_cross', sma_cross_opgen, data.big_table()),
     vstats.StrategyInfo('sma_cross_long', sma_cross_long_opgen, data.big_table()),
     vstats.StrategyInfo('sma_cross_short', sma_cross_short_opgen, data.big_table()),
-    ], 'test_results.html')
+    ], 'test_comparison.html')
 
 # debug
 saving_opgen.debug_plot(data.big_table(), 'test_saving.html')

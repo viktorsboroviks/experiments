@@ -24,14 +24,14 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
 
     SMA coefficients for Long and Short may differ.
     '''
-    COEFS = ('long entry fast sma',
+    COEFS = {'long entry fast sma',
              'long entry slow sma',
              'long exit fast sma',
              'long exit slow sma',
              'short entry fast sma',
              'short entry slow sma',
              'short exit fast sma',
-             'short exit slow sma')
+             'short exit slow sma'}
 
     # pylint: disable=too-many-arguments
     def __init__(self,
@@ -58,7 +58,7 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
             add_cash_alarm: rules for adding the `add_cash` amount
             price_info: description of the asset price data
         '''
-        if not price_info.close_di:
+        if not price_info.di['price close']:
             raise ValueError
         if not isinstance(coefs, dict):
             raise TypeError
@@ -181,7 +181,7 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         ]
         return ops
 
-    def debug_subplots(self, table) -> list[vplot.Subplot]:
+    def debug_subplots(self, table, first_row=1) -> list[vplot.Subplot]:
         '''
         Return a list of debug subplots.
         Also used to draw debug_plot().
@@ -189,11 +189,13 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         Args:
             table: pd.DataFrame object containing the data to debug.
         '''
-        subplots = vfin_ops.TradingOpGen.debug_subplots(self, table)
+        subplots = vfin_ops.TradingOpGen.debug_subplots(self,
+                                                        table,
+                                                        first_row=first_row)
         subplots += [
             vplot.Subplot(
                 col=1,
-                row=len(subplots) + 1,
+                row=first_row + len(subplots),
                 traces=[
                     vplot.Scatter(
                         x=table.index,
@@ -213,7 +215,7 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
             ),
             vplot.Subplot(
                 col=1,
-                row=len(subplots) + 2,
+                row=first_row + len(subplots) + 1,
                 traces=[
                     vplot.Scatter(
                         x=table.index,
@@ -233,7 +235,7 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
             ),
             vplot.Subplot(
                 col=1,
-                row=len(subplots) + 3,
+                row=first_row + len(subplots) + 2,
                 traces=[
                     vplot.Scatter(
                         x=table.index,
@@ -253,7 +255,7 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
             ),
             vplot.Subplot(
                 col=1,
-                row=len(subplots) + 4,
+                row=first_row + len(subplots) + 3,
                 traces=[
                     vplot.Scatter(
                         x=table.index,
