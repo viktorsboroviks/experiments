@@ -6,15 +6,12 @@
 
 ## tasks
 
-- add first experiment sma cross via investing
-  - strategies - in experiments
-    - saving
-    - buy and hold
-    - sma cross (or RSI)
-      - long only
-      - short only
-      - long and short
-  - find optimal sma cross parameters for daily SPX
+- compare my SMA cross results with some other simulator
+- compare runtime
+- add Op optimization
+- add BactestEngine progress bar + ETA
+
+- find optimal sma cross parameters for daily SPX
 
 - publish tool
 - publish sma cross experiment
