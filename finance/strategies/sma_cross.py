@@ -58,7 +58,7 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
             add_cash_alarm: rules for adding the `add_cash` amount
             price_info: description of the asset price data
         '''
-        if not price_info.di['price close']:
+        if not price_info.di['close']:
             raise ValueError
         if not isinstance(coefs, dict):
             raise TypeError
@@ -275,5 +275,3 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
             )
         ]
         return subplots
-        # TODO: create a way to return only part of debug (definite subplots),
-        #       not all

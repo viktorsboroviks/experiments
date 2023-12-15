@@ -26,7 +26,7 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
                  add_cash_alarm: typing.Union[str, vtime.Alarm] = None,
                  price_info: vfin.InstrumentInfo = None):
 
-        if not price_info.di['price close']:
+        if not price_info.di['close']:
             raise ValueError
 
         vfin_ops.TradingOpGen.__init__(self,
