@@ -2,14 +2,17 @@
 
 ## goal
 
+- always day one
+- keep simple
+- optimize when needed
 - inspiring, fantastically beautiful graphs
 
 ## tasks
 
-- compare my SMA cross results with some other simulator
-- compare runtime
-- add Op optimization
+- add tests
 - add BactestEngine progress bar + ETA
+
+- fix reasonable TODOs
 
 - find optimal sma cross parameters for daily SPX
 

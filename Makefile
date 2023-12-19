@@ -1,15 +1,16 @@
 TOOLS_GIT = git@github.com:viktorsboroviks/tools.git
-TOOLS_BRANCH = origin/master
+TOOLS_BRANCH = origin/main
 TOOLS_PATH = tools
+PYTHONPATH := $(PYTHONPATH):$(TOOLS_PATH)/python:finance
+ENV_FIN = ./$(TOOLS_PATH)/scripts/env_fin.sh
 
 .PHONY: all \
 	setup \
 	clean \
 	distclean \
-	run-experiments \
-	run-finance
+	test
 
-all: run-experiments
+all: test
 
 $(TOOLS_PATH):
 	git clone $(TOOLS_GIT) $(TOOLS_PATH)
@@ -18,15 +19,9 @@ $(TOOLS_PATH):
 setup: $(TOOLS_PATH)
 	make env-fin --directory $(TOOLS_PATH)
 
-run-experiments: run-finance
-
-run-finance: setup
-	cd finance/ ../../$(TOOLS_PATH)/scripts/env_fin.sh \
-		python3 alarm.py
-	cd finance/ ../../$(TOOLS_PATH)/scripts/env_fin.sh \
-		python3 price.py
-	cd finance/ ../../$(TOOLS_PATH)/scripts/env_fin.sh \
-		python3 saving_comparison.py
+test: setup
+	$(ENV_FIN) PYTHONPATH=$(PYTHONPATH) \
+		python3 -m pytest --capture=no ./tests/test_strategies.py
 
 # remove temporary files
 clean:
