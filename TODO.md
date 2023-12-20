@@ -9,9 +9,7 @@
 
 ## tasks
 
-- fix tools/test
-- add optimization statistics to vfin.BacktestEngine
-
+- fix tools make examples and warnings in those
 - fix reasonable TODOs
 
 - find optimal sma cross parameters for daily SPX
