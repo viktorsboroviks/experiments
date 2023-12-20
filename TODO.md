@@ -9,8 +9,8 @@
 
 ## tasks
 
-- add tests
-- add BactestEngine progress bar + ETA
+- fix tools/test
+- add optimization statistics to vfin.BacktestEngine
 
 - fix reasonable TODOs
 
