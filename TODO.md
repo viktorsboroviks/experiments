@@ -9,8 +9,8 @@
 
 ## tasks
 
-- fix tools make examples and warnings in those
-- fix reasonable TODOs
+- try mpl + mpld3 for html
+- run speed comparison for plotly vs mpl. How to improve?
 
 - find optimal sma cross parameters for daily SPX
 

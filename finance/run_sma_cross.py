@@ -12,13 +12,20 @@ data = vfin.Data({
                               start=datetime.datetime(2000, 1, 1),
                               end=datetime.datetime(2023, 11, 1))
 })
-
 instrument = vfin.InstrumentInfo(ticker_name='^SPX',
                                  close_di=vfin.DataInfo('^SPX', 'Close'),
                                  slippage=0.5)
 monthly_alarm = vtime.Alarm('monthly')
 
-# TODO: write a proper
+# generate coefficients
+#   coefs
+#       key
+#       min/max
+#   num of iterations
+#
+# return object
+#   coefs: dict
+#   name
 coefs = (
     (200, 50, 200, 50),
     (150, 50, 150, 50),

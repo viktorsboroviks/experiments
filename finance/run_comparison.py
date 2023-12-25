@@ -88,7 +88,8 @@ vstats.plot_results([
     vstats.StrategyInfo('sma_cross', sma_cross_opgen, data.big_table()),
     vstats.StrategyInfo('sma_cross_long', sma_cross_long_opgen, data.big_table()),
     vstats.StrategyInfo('sma_cross_short', sma_cross_short_opgen, data.big_table()),
-    ], 'test_comparison.html')
+    ], 'test_comparison.svg')
+    # TODO: ], 'test_comparison.html')
 
 # debug
 saving_opgen.debug_plot(data.big_table(), 'test_saving.html')
