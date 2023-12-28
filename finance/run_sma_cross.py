@@ -61,4 +61,6 @@ sis = [vstats.StrategyInfo(opg.name,
 # generate results
 vstats.print_results(sis)
 vstats.plot_results(sis, 'test_sma_cross_comparison.html')
+# TODO: remove debug print
+print(len(sis))
 # TODO: vstats.plot_surface()

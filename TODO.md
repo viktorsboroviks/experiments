@@ -9,8 +9,9 @@
 
 ## tasks
 
-- lint, fix tests and all experiments
-- reorganize to pass values in defined iptimal chinks
+- optimize vfin.data.init
+- reorganize to pass values in defined optimal chunks
+- add sanity check to not even process inadequate params
 
 - add plot as 3d surface
 - find optimal sma cross parameters for daily SPX
@@ -30,7 +31,6 @@
 - find bottlenecks
   - strip unused columns from pd
   - run in chunks, find optimal chunk size
-  - speed up array search for duplicates
   - cache/store intermediate results
 - try compiling
 - try separating calls: vectors / sequences
