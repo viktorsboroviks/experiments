@@ -9,6 +9,8 @@
 
 ## tasks
 
+- lint, fix tests and all experiments
+
 - add plot as 3d surface
 - find optimal sma cross parameters for daily SPX
 
