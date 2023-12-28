@@ -25,13 +25,13 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
     SMA coefficients for Long and Short may differ.
     '''
     PARAMS = {'long entry fast sma',
-             'long entry slow sma',
-             'long exit fast sma',
-             'long exit slow sma',
-             'short entry fast sma',
-             'short entry slow sma',
-             'short exit fast sma',
-             'short exit slow sma'}
+              'long entry slow sma',
+              'long exit fast sma',
+              'long exit slow sma',
+              'short entry fast sma',
+              'short entry slow sma',
+              'short exit fast sma',
+              'short exit slow sma'}
 
     # pylint: disable=too-many-arguments
     def __init__(self,
@@ -66,6 +66,8 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
             add_cash: the amount of cash to be added
             add_cash_alarm: rules for adding the `add_cash` amount
             price_info: description of the asset price data
+            name: strategy name,
+                  if None - generated automatically
         '''
         if not price_info.di['close']:
             raise ValueError

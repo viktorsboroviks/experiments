@@ -41,34 +41,34 @@ def test():
         initial_cash=1000,
         add_cash=100,
         add_cash_alarm=monthly_alarm,
-        coefs={'long entry slow sma': 200,
-               'long entry fast sma': 50,
-               'long exit slow sma': 200,
-               'long exit fast sma': 50,
-               'short entry slow sma': 200,
-               'short entry fast sma': 50,
-               'short exit slow sma': 200,
-               'short exit fast sma': 50})
+        params={'long entry slow sma': 200,
+                'long entry fast sma': 50,
+                'long exit slow sma': 200,
+                'long exit fast sma': 50,
+                'short entry slow sma': 200,
+                'short entry fast sma': 50,
+                'short exit slow sma': 200,
+                'short exit fast sma': 50})
 
     sma_cross_long_opgen = strategies.sma_cross.SmaCrossOpGen(
         price_info=instrument,
         initial_cash=1000,
         add_cash=100,
         add_cash_alarm=monthly_alarm,
-        coefs={'long entry slow sma': 200,
-               'long entry fast sma': 50,
-               'long exit slow sma': 200,
-               'long exit fast sma': 50})
+        params={'long entry slow sma': 200,
+                'long entry fast sma': 50,
+                'long exit slow sma': 200,
+                'long exit fast sma': 50})
 
     sma_cross_short_opgen = strategies.sma_cross.SmaCrossOpGen(
         price_info=instrument,
         initial_cash=1000,
         add_cash=100,
         add_cash_alarm=monthly_alarm,
-        coefs={'short entry slow sma': 200,
-               'short entry fast sma': 50,
-               'short exit slow sma': 200,
-               'short exit fast sma': 50})
+        params={'short entry slow sma': 200,
+                'short entry fast sma': 50,
+                'short exit slow sma': 200,
+                'short exit fast sma': 50})
 
     vfin.BacktestEngine(
         data,

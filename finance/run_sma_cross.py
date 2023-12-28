@@ -17,12 +17,12 @@ data = vfin.Data({
 })
 
 # generate parameters
-params = [param for param in vparams.cortesian_product({
-            'long entry slow sma': [a for a in range(5, 8)],
-            'long entry fast sma': [a for a in range(5, 8)],
-            'short entry slow sma': [a for a in range(5, 8)],
-            'short entry fast sma': [a for a in range(5, 8)]
-        })]
+params = list(vparams.cortesian_product({
+            'long entry slow sma': list(range(5, 8)),
+            'long entry fast sma': list(range(5, 8)),
+            'short entry slow sma': list(range(5, 8)),
+            'short entry fast sma': list(range(5, 8))
+        }))
 
 # generate operation generators
 instrument = vfin.InstrumentInfo(ticker_name='^SPX',
@@ -62,4 +62,3 @@ sis = [vstats.StrategyInfo(opg.name,
 vstats.print_results(sis)
 vstats.plot_results(sis, 'test_sma_cross_comparison.html')
 # TODO: vstats.plot_surface()
-
