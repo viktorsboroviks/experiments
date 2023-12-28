@@ -27,6 +27,10 @@
 
 - run profiling
 - find bottlenecks
+  - strip unused columns from pd
+  - run in chunks, find optimal chunk size
+  - speed up array search for duplicates
+  - cache/store intermediate results
 - try compiling
 - try separating calls: vectors / sequences
   - run vectors first over all data at once
