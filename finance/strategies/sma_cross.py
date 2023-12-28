@@ -24,7 +24,7 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
 
     SMA coefficients for Long and Short may differ.
     '''
-    COEFS = {'long entry fast sma',
+    PARAMS = {'long entry fast sma',
              'long entry slow sma',
              'long exit fast sma',
              'long exit slow sma',
@@ -35,16 +35,25 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
 
     # pylint: disable=too-many-arguments
     def __init__(self,
-                 coefs: dict[str, int],
+                 params: dict[typing.Literal['long entry fast sma',
+                                             'long entry slow sma',
+                                             'long exit fast sma',
+                                             'long exit slow sma',
+                                             'short entry fast sma',
+                                             'short entry slow sma',
+                                             'short exit fast sma',
+                                             'short exit slow sma'],
+                              int],
                  initial_cash: typing.Union[int, float],
                  add_cash: typing.Union[int, float] = 0,
                  add_cash_alarm: typing.Union[str, vtime.Alarm] = None,
-                 price_info: vfin.InstrumentInfo = None):
+                 price_info: vfin.InstrumentInfo = None,
+                 name: str = None):
         '''
         Init.
 
         Args:
-            coefs: int SMA coefficients, allowed keys are:
+            params: int SMA parameters, allowed keys are:
                 'long entry fast sma',
                 'long entry slow sma',
                 'long exit fast sma',
@@ -60,31 +69,32 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         '''
         if not price_info.di['close']:
             raise ValueError
-        if not isinstance(coefs, dict):
+        if not isinstance(params, dict):
             raise TypeError
-        for k, v in coefs.items():
-            if k not in self.COEFS:
+        for k, v in params.items():
+            if k not in self.PARAMS:
                 raise ValueError
             if not isinstance(v, int):
                 raise TypeError
 
-        self.coefs = {}
-        for c in self.COEFS:
-            if c in coefs:
-                self.coefs[c] = coefs[c]
+        self.params = {}
+        for p in self.PARAMS:
+            if p in params:
+                self.params[p] = params[p]
             else:
-                self.coefs[c] = 0
+                self.params[p] = 0
 
         vfin_ops.TradingOpGen.__init__(self,
                                        initial_cash=initial_cash,
                                        add_cash=add_cash,
                                        add_cash_alarm=add_cash_alarm,
-                                       price_info=price_info)
-        self._init_di_coefs()
+                                       price_info=price_info,
+                                       name=name)
+        self._init_di_params()
 
-    def _init_di_coefs(self):
-        for c in self.COEFS:
-            self.di[c] = vfin.DataInfo(self.name, c)
+    def _init_di_params(self):
+        for p in self.PARAMS:
+            self.di[p] = vfin.DataInfo(self.name, p)
 
     def ops_prepare(self) -> list[vfin.Operation]:
         '''
@@ -94,18 +104,18 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         - Calculate SMAs
         '''
         ops = []
-        for c in self.COEFS:
-            if self.coefs[c]:
+        for p in self.PARAMS:
+            if self.params[p]:
                 ops += [
                     vfin_ops.Call(
                         function=lambda x, d: ta.SMA(x, d)[-1],
                         kwargs={'x': self.opgens['price close'].di['src'],
-                                'd': self.coefs[c]},
-                        ret=self.di[c]),
+                                'd': self.params[p]},
+                        ret=self.di[p]),
                 ]
             else:
                 ops += [
-                    vfin_ops.Set(0, self.di[c])
+                    vfin_ops.Set(0, self.di[p])
                 ]
         return ops
 
@@ -116,8 +126,8 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         Generate operations to:
         - Calculate long entry signal self.di['long entry signal']
         '''
-        if not self.coefs['long entry slow sma'] \
-                or not self.coefs['long entry fast sma']:
+        if not self.params['long entry slow sma'] \
+                or not self.params['long entry fast sma']:
             return []
         ops = [
             vfin_ops.Call(function=lambda fast, slow: fast[-1] > slow[-1],
@@ -134,8 +144,8 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         Generate operations to:
         - Calculate long exit signal self.di['long exit signal']
         '''
-        if not self.coefs['long exit slow sma'] \
-                or not self.coefs['long exit fast sma']:
+        if not self.params['long exit slow sma'] \
+                or not self.params['long exit fast sma']:
             return []
         ops = [
             vfin_ops.Call(function=lambda fast, slow: fast[-1] < slow[-1],
@@ -152,8 +162,8 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         Generate operations to:
         - Calculate short entry signal self.di['short entry signal']
         '''
-        if not self.coefs['short entry slow sma'] \
-                or not self.coefs['short entry fast sma']:
+        if not self.params['short entry slow sma'] \
+                or not self.params['short entry fast sma']:
             return []
         ops = [
             vfin_ops.Call(function=lambda fast, slow: fast[-1] < slow[-1],
@@ -170,8 +180,8 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
         Generate operations to:
         - Calculate short exit signal self.di['short exit signal']
         '''
-        if not self.coefs['short exit slow sma'] \
-                or not self.coefs['short exit fast sma']:
+        if not self.params['short exit slow sma'] \
+                or not self.params['short exit fast sma']:
             return []
         ops = [
             vfin_ops.Call(function=lambda fast, slow: fast[-1] > slow[-1],

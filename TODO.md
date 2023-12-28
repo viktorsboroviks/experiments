@@ -9,12 +9,6 @@
 
 ## tasks
 
-- add name override to strategies (and all parent classes)
-- add progress bar for parameter generation
-- rename param generation to cortesian_product
-- can Param object be replaced with dict[key: values]?
-- separate big_table from data object
-
 - add plot as 3d surface
 - find optimal sma cross parameters for daily SPX
 
