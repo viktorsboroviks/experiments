@@ -10,6 +10,9 @@
 ## tasks
 
 - optimize vfin.data.init
+- remove unneeded data copy
+- review all places where data is transfered between sets, lists, arrays
+- replace raises with asserts
 - reorganize to pass values in defined optimal chunks
 - add sanity check to not even process inadequate params
 - can this thing be made much simpler?
