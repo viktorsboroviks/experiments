@@ -6,15 +6,15 @@ import vfin
 import vstats
 import vtime
 import vparams
+import vtable
 import strategies.sma_cross
 
 
-# fetch data
-data = vfin.Data({
-    '^SPX': vfin.fetch_ticker('^SPX',
-                              start=datetime.datetime(2000, 1, 1),
-                              end=datetime.datetime(2023, 11, 1))
-})
+# fetch input dataframes
+dfs = {'^SPX': vfin.fetch_ticker('^SPX',
+                                 start=datetime.datetime(2000, 1, 1),
+                                 end=datetime.datetime(2023, 11, 1))
+}
 
 # generate parameters
 params = list(vparams.cortesian_product({
@@ -26,7 +26,7 @@ params = list(vparams.cortesian_product({
 
 # generate operation generators
 instrument = vfin.InstrumentInfo(ticker_name='^SPX',
-                                 di={'close': vfin.DataInfo('^SPX', 'Close')},
+                                 di={'close': vtable.DataInfo('^SPX', 'Close')},
                                  slippage=0.5)
 monthly_alarm = vtime.Alarm('monthly')
 opgs = [strategies.sma_cross.SmaCrossOpGen(
@@ -43,7 +43,7 @@ for opg in opgs:
     ops += opg.ops()
 
 # backtest
-be = vfin.BacktestEngine(data, ops)
+be = vfin.BacktestEngine(ops=ops, dfs=dfs)
 bt = be.run()
 
 # TODO: save for reuse

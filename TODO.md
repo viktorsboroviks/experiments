@@ -18,6 +18,7 @@
 - can this thing be made much simpler?
   - only one df
   - run continuous backtest, check for no future prediction
+- replace raises with asserts where reasonable
 
 - add plot as 3d surface
 - find optimal sma cross parameters for daily SPX

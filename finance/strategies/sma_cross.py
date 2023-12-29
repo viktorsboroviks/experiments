@@ -7,6 +7,7 @@ import talib as ta
 import vfin
 import vfin_ops
 import vplot
+import vtable
 import vtime
 
 
@@ -96,7 +97,7 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
 
     def _init_di_params(self):
         for p in self.PARAMS:
-            self.di[p] = vfin.DataInfo(self.name, p)
+            self.di[p] = vtable.DataInfo(self.name, p)
 
     def ops_prepare(self) -> list[vfin.Operation]:
         '''
