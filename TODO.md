@@ -13,6 +13,7 @@
 - replace raises with asserts
 - add types
 
+- compare time running w/o asserts
 - optimize execute if possible
 
 - remove unneeded data copy
