@@ -70,15 +70,11 @@ class SmaCrossOpGen(vfin_ops.TradingOpGen):
             name: strategy name,
                   if None - generated automatically
         '''
-        if not price_info.di['close']:
-            raise ValueError
-        if not isinstance(params, dict):
-            raise TypeError
+        assert price_info.di['close']
+        assert isinstance(params, dict)
         for k, v in params.items():
-            if k not in self.PARAMS:
-                raise ValueError
-            if not isinstance(v, int):
-                raise TypeError
+            assert k in self.PARAMS
+            assert isinstance(v, int)
 
         self.params = {}
         for p in self.PARAMS:

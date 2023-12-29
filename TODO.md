@@ -9,16 +9,14 @@
 
 ## tasks
 
-- optimize vfin.data.init
+- lint all
+- replace raises with asserts
+- add types
+
+- optimize execute if possible
+
 - remove unneeded data copy
 - review all places where data is transfered between sets, lists, arrays
-- replace raises with asserts
-- reorganize to pass values in defined optimal chunks
-- add sanity check to not even process inadequate params
-- can this thing be made much simpler?
-  - only one df
-  - run continuous backtest, check for no future prediction
-- replace raises with asserts where reasonable
 
 - add plot as 3d surface
 - find optimal sma cross parameters for daily SPX

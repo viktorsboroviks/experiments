@@ -18,10 +18,10 @@ dfs = {'^SPX': vfin.fetch_ticker('^SPX',
 
 # generate parameters
 params = list(vparams.cortesian_product({
-            'long entry slow sma': list(range(5, 8)),
-            'long entry fast sma': list(range(5, 8)),
-            'short entry slow sma': list(range(5, 8)),
-            'short entry fast sma': list(range(5, 8))
+            'long entry slow sma': list(range(5, 7)),
+            'long entry fast sma': list(range(5, 7)),
+            'short entry slow sma': list(range(5, 7)),
+            'short entry fast sma': list(range(5, 7))
         }))
 
 # generate operation generators
