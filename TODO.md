@@ -12,7 +12,9 @@
 - lint all
 - replace raises with asserts
 - add types
+- clean up vfin, vcore
 
+- run w/o optimization, check time
 - compare time running w/o asserts
 - try pre-compiling
 - optimize execute if possible
