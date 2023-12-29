@@ -14,6 +14,7 @@
 - add types
 
 - compare time running w/o asserts
+- try pre-compiling
 - optimize execute if possible
 
 - remove unneeded data copy
