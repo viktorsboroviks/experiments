@@ -12,6 +12,7 @@
 - optimize vfin.data.init
 - reorganize to pass values in defined optimal chunks
 - add sanity check to not even process inadequate params
+- can this thing be made much simpler?
 
 - add plot as 3d surface
 - find optimal sma cross parameters for daily SPX
