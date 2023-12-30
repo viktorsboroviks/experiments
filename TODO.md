@@ -10,6 +10,7 @@
 ## tasks
 
 - add lint parameter to hide TODOs
+- update make to run all strategies
 
 - run w/o optimization, check time
 - compare time running w/o asserts
