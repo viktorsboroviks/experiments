@@ -19,6 +19,7 @@
 
 - optimize execute if possible
   - try pre-compiling
+    - where?
   - try addressing as normal array/int/hash
   - load all ops, execute together as a program for every slice
 
