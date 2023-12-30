@@ -1,10 +1,10 @@
 '''
 Simple saving strategy.
 '''
-import vfin
 import vfin_ops
 import vplot
 import vtime
+import vtable
 
 
 # pylint: disable=too-few-public-methods
@@ -21,9 +21,9 @@ class SavingOpGen(vfin_ops.TradingOpGen):
                                        add_cash,
                                        add_cash_alarm)
 
-        self.di['total'] = vfin.DataInfo(self.name,
-                                         'total',
-                                         first_value=initial_cash)
+        self.di['total'] = vtable.DataInfo(self.name,
+                                           'total',
+                                           first_value=initial_cash)
         if add_cash:
             self.opgens['alarm'] = vfin_ops.AlarmOpGen(add_cash_alarm)
 

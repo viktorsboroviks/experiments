@@ -11,9 +11,10 @@ import strategies.sma_cross
 
 
 # fetch input dataframes
-dfs = {'^SPX': vfin.fetch_ticker('^SPX',
-                                 start=datetime.datetime(2000, 1, 1),
-                                 end=datetime.datetime(2023, 11, 1))
+dfs = {
+    '^SPX': vfin.fetch_ticker('^SPX',
+                              start=datetime.datetime(2000, 1, 1),
+                              end=datetime.datetime(2023, 11, 1))
 }
 
 # generate parameters

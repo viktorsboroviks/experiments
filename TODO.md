@@ -9,13 +9,7 @@
 
 ## tasks
 
-- lint all
-- replace raises with asserts
-- add types
-- clean up vfin, vcore
-
-- resolve glitching progress bar
-  - 2s delay?
+- add lint parameter to hide TODOs
 
 - run w/o optimization, check time
 - compare time running w/o asserts
