@@ -22,6 +22,7 @@
     - where?
   - try addressing as normal array/int/hash
   - load all ops, execute together as a program for every slice
+  - google lightweight program from list of ops on table
 
 - remove unneeded data copy
 - review all places where data is transfered between sets, lists, arrays
