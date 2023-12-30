@@ -16,8 +16,11 @@
 
 - run w/o optimization, check time
 - compare time running w/o asserts
-- try pre-compiling
+
 - optimize execute if possible
+  - try pre-compiling
+  - try addressing as normal array/int/hash
+  - load all ops, execute together as a program for every slice
 
 - remove unneeded data copy
 - review all places where data is transfered between sets, lists, arrays
