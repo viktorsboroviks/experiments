@@ -22,6 +22,11 @@
     - where?
   - try addressing as normal array/int/hash
   - load all ops, execute together as a program for every slice
+    - mark dis that are should not be optimized
+    - do not store in table dis that are marked for optimizarion
+      - create locally in the context of one op execution row
+      - how many per row?
+    - in debug mode do not optimize
   - google lightweight program from list of ops on table
 - check if op optimization does not leave anything behind
 
