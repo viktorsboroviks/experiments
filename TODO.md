@@ -14,11 +14,13 @@
 
 - remove tools.git/TODO.md
 
-- rewrite big_table() to not use excessive areays
-  - create empty df, write to it directly
+- store req dis in Data
+  - rename to di: dict
   - store/use req_di from init
   - store rec_di sorted by key
   - check for no None key/col
+- rewrite big_table() to not use excessive areays
+  - create empty df, write to it directly
 
 - run w/o optimization, check time
 - compare time running w/o asserts
