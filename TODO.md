@@ -9,10 +9,7 @@
 
 ## tasks
 
-- add lint parameter to hide TODOs
-- update make to run all strategies
-
-- remove tools.git/TODO.md
+- add status prints component
 
 - store req dis in Data
   - rename to di: dict

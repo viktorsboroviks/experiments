@@ -7,7 +7,6 @@ import vtime
 import vtable
 
 
-# pylint: disable=too-few-public-methods
 class SavingOpGen(vfin_ops.TradingOpGen):
     '''
     Generate an operation sequence for  saving over time.

@@ -19,7 +19,6 @@ class MoneyAvgOpGen(vfin_ops.TradingOpGen):
         price_di: price data for buying/selling asset
         price_slippage_pct: price slippage in percents
     '''
-    # pylint: disable=too-many-arguments
     def __init__(self,
                  initial_cash: typing.Union[int, float],
                  add_cash: typing.Union[int, float] = 0,
