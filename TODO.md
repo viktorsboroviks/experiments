@@ -9,7 +9,11 @@
 
 ## tasks
 
-- add status prints component
+- add vlog
+  - configure
+    - use logger, set handler
+  - info
+  - debug etc.
 
 - store req dis in Data
   - rename to di: dict
