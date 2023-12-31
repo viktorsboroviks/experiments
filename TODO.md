@@ -12,6 +12,14 @@
 - add lint parameter to hide TODOs
 - update make to run all strategies
 
+- remove tools.git/TODO.md
+
+- rewrite big_table() to not use excessive areays
+  - create empty df, write to it directly
+  - store/use req_di from init
+  - store rec_di sorted by key
+  - check for no None key/col
+
 - run w/o optimization, check time
 - compare time running w/o asserts
 
