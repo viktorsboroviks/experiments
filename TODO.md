@@ -10,6 +10,7 @@
 ## tasks
 
 - lint vlog
+- add assert to is_effective
 
 - store req dis in Data
   - rename to di: dict
