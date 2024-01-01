@@ -14,8 +14,6 @@ dfs = {
 
 price_opgen = vfin_ops.PriceOpGen(src_di=vtable.DataInfo('^SPX', 'Close'),
                                   slippage_pct=0.5)
-# debug name
-print(price_opgen.name)
 
 big_table = vfin.BacktestEngine(
     price_opgen.ops(),

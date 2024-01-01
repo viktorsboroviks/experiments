@@ -3,12 +3,15 @@ Experiment for testing SMA cross strategy.
 '''
 import datetime
 import vfin
-import vstats
-import vtime
+import vlog
 import vparams
+import vstats
 import vtable
+import vtime
 import strategies.sma_cross
 
+
+vlog.configure('debug')
 
 # fetch input dataframes
 dfs = {
@@ -63,5 +66,5 @@ sis = [vstats.StrategyInfo(opg.name,
 vstats.print_results(sis)
 vstats.plot_results(sis, 'test_sma_cross_comparison.html')
 # TODO: remove debug print
-print(len(sis))
+print(f'total strategies analized: {len(sis)}')
 # TODO: vstats.plot_surface()

@@ -9,7 +9,7 @@
 
 ## tasks
 
-- add status prints component
+- lint vlog
 
 - store req dis in Data
   - rename to di: dict
